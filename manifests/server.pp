@@ -384,6 +384,7 @@ define barman::server (
         user        => $barman::settings::dbuser,
         address     => $barman::autoconfigure::exported_ipaddress,
         auth_method => 'md5',
+        order       => $barman::settings::hba_entry_order,
         tag         => "barman-${barman::host_group}",
       }
     }
@@ -394,6 +395,7 @@ define barman::server (
       user        => $barman::settings::dbuser,
       address     => $barman::autoconfigure::exported_ipaddress,
       auth_method => 'md5',
+      order       => $barman::settings::hba_entry_order,
       tag         => "barman-${barman::host_group}",
     }
   }
