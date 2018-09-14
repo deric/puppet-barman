@@ -407,7 +407,7 @@ class barman::postgres (
   if $manage_ssh_host_keys {
     @@sshkey { "postgres-${::hostname}":
       ensure       => present,
-      host_aliases => [$::hostname, $::fqdn, $::ipaddress],
+      host_aliases => [$::hostname, $::fqdn, $::ipaddress, $server_address],
       key          => $::sshecdsakey,
       type         => 'ecdsa-sha2-nistp256',
       target       => "${barman_home}/.ssh/known_hosts",
