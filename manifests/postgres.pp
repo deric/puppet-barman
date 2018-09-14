@@ -390,15 +390,17 @@ class barman::postgres (
 
   # Fill the .pgpass file
   @@file_line { "barman_pgpass_content-${::hostname}":
-    path => "${barman_home}/.pgpass",
-    line => "${server_address}:${server_port}:${barman_dbname}:${barman_dbuser}:${real_password}",
-    tag  => "barman-${host_group}",
+    path  => "${barman_home}/.pgpass",
+    line  => "${server_address}:${server_port}:${barman_dbname}:${barman_dbuser}:${real_password}",
+    match => "^${regexpescape($server_address)}:${server_port}:${barman_dbname}:${barman_dbuser}",
+    tag   => "barman-${host_group}",
   }
   if $streaming_archiver {
     @@file_line { "barman_pgpass_content-${::hostname}-replication":
-      path => "${barman_home}/.pgpass",
-      line => "${server_address}:${server_port}:replication:${barman_dbuser}:${real_password}",
-      tag  => "barman-${host_group}",
+      path  => "${barman_home}/.pgpass",
+      line  => "${server_address}:${server_port}:replication:${barman_dbuser}:${real_password}",
+      match => "^${regexpescape($server_address)}:${server_port}:replication:${barman_dbuser}",
+      tag   => "barman-${host_group}",
     }
   }
 
