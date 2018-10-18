@@ -377,8 +377,8 @@ class barman::postgres (
   }
 
   if $manage_cron {
-    @@cron { "barman_backup_${::hostname}":
-      command  => "[ -x /usr/bin/barman ] && /usr/bin/barman -q backup ${::hostname}",
+    @@cron { "barman_backup_${postgres_server_id}":
+      command  => "[ -x /usr/bin/barman ] && /usr/bin/barman -q backup ${postgres_server_id}",
       user     => 'root',
       monthday => $backup_mday,
       weekday  => $backup_wday,
