@@ -362,7 +362,7 @@ define barman::server (
   file { "/etc/barman.conf.d/${name}.conf":
     ensure  => $ensure,
     mode    => '0640',
-    owner   => $user,
+    owner   => $::barman::settings::user,
     group   => $::barman::settings::group,
     content => template($conf_template),
   }
