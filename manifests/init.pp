@@ -419,7 +419,7 @@ class barman (
     ensure  => $ensure_directory,
     purge   => $purge_unknown_conf,
     recurse => true,
-    owner   => 'root',
+    owner   => $user,
     group   => $group,
     mode    => '0750',
     require => Package['barman'],
@@ -427,7 +427,7 @@ class barman (
 
   file { '/etc/barman.conf':
     ensure  => $ensure_file,
-    owner   => 'root',
+    owner   => $user,
     group   => $group,
     mode    => '0640',
     content => template($conf_template),
