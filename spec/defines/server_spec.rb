@@ -65,7 +65,7 @@ describe 'barman::server', type: :define do
     let(:title) { 'server!@#%' }
 
     it {
-      expect { contain_class('barman::server') }.to raise_error(Puppet::Error, %r{is not a valid name})
+      expect { is_expected.to contain_class('barman::server') }.to raise_error(Puppet::Error, %r{is not a valid name})
     }
   end
 
@@ -74,7 +74,7 @@ describe 'barman::server', type: :define do
     let(:params) { { ssh_command: 'ssh postgres@server1' } }
 
     it {
-      expect { contain_class('barman::server') }.to raise_error(Puppet::Error, %r{(Must pass |expects a value for parameter ')conninfo})
+      expect { is_expected.to contain_class('barman::server') }.to raise_error(Puppet::Error, %r{(Must pass |expects a value for parameter ')conninfo})
     }
   end
 
@@ -82,7 +82,7 @@ describe 'barman::server', type: :define do
     let(:params) { { conninfo: 'user=user1 host=server1 db=db1 pass=pass1 port=5432' } }
 
     it {
-      expect { contain_class('barman::server') }.to raise_error(Puppet::Error, %r{(Must pass |expects a value for parameter ')ssh_command})
+      expect { is_expected.to contain_class('barman::server') }.to raise_error(Puppet::Error, %r{(Must pass |expects a value for parameter ')ssh_command})
     }
   end
 end
