@@ -12,6 +12,9 @@ group :development, :unit_tests do
   gem 'json',                    :require => false
   gem 'metadata-json-lint',      :require => false
   gem 'iconv',                   :require => false
+  gem 'rubocop',                 :require => false
+  gem 'rubocop-rspec',           :require => false
+  gem 'rubocop-i18n',            :require => false
 end
 
 group :system_tests do
