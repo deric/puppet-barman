@@ -4,16 +4,17 @@ require 'bundler/setup'
 Bundler.require :default
 
 require 'puppetlabs_spec_helper/rake_tasks'
+require 'puppet-syntax/tasks/puppet-syntax'
 
-require 'puppet-lint/tasks/puppet-lint'
+exclude_paths = [
+  "bundle/**/*",
+  "pkg/**/*",
+  "vendor/**/*",
+  "spec/**/*",
+]
 
-# Workaround for https://github.com/rodjek/puppet-lint/issues/331
-Rake::Task[:lint].clear
 PuppetLint::RakeTask.new :lint do |config|
-  config.disable_checks = ["80chars", "140chars"]
-  config.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp", "vendor/**"]
-  config.fail_on_warnings = true
-  # Workaround for missing "relative" accessor
-  #config.relative = true
-  PuppetLint.configuration.relative = true
+  config.ignore_paths = exclude_paths
 end
+
+PuppetSyntax.exclude_paths = exclude_paths
