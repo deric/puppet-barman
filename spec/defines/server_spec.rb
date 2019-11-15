@@ -14,18 +14,13 @@ describe 'barman::server', type: :define do
     }
   end
 
-  # Supply defaults for next tests
-  before :all do
-    @defaults = {
-      conninfo: 'user=user1 host=server1 db=db1 pass=pass1 port=5432',
-      ssh_command: 'ssh postgres@server1'
-    }
-  end
-
   # Example configuration
   let(:title) { 'server1' }
   let(:params) do
-    @defaults
+    {
+      conninfo: 'user=user1 host=server1 db=db1 pass=pass1 port=5432',
+      ssh_command: 'ssh postgres@server1'
+    }
   end
 
   let :pre_condition do
@@ -48,7 +43,16 @@ describe 'barman::server', type: :define do
   # Does not add compression settings when not asked
 
   context 'with settings' do
-    let(:params) { @defaults.merge(compression: 'bzip2', pre_backup_script: 'true', post_backup_script: 'true', custom_lines: 'thisisastring') }
+    let(:params) do
+      {
+        conninfo: 'user=user1 host=server1 db=db1 pass=pass1 port=5432',
+        ssh_command: 'ssh postgres@server1',
+        compression: 'bzip2',
+        pre_backup_script: 'true',
+        post_backup_script: 'true',
+        custom_lines: 'thisisastring'
+      }
+    end
 
     it { is_expected.to contain_file('/etc/barman.conf.d/server1.conf').with_content(%r{compression = bzip2}) }
     it { is_expected.to contain_file('/etc/barman.conf.d/server1.conf').with_content(%r{pre_backup_script = }) }
@@ -61,7 +65,7 @@ describe 'barman::server', type: :define do
     let(:title) { 'server!@#%' }
 
     it {
-      expect { expect(subject).to contain_class('barman::server') }.to raise_error(Puppet::Error, %r{is not a valid name})
+      expect { contain_class('barman::server') }.to raise_error(Puppet::Error, %r{is not a valid name})
     }
   end
 
@@ -70,7 +74,7 @@ describe 'barman::server', type: :define do
     let(:params) { { ssh_command: 'ssh postgres@server1' } }
 
     it {
-      expect { expect(subject).to contain_class('barman::server') }.to raise_error(Puppet::Error, %r{(Must pass |expects a value for parameter ')conninfo})
+      expect { contain_class('barman::server') }.to raise_error(Puppet::Error, %r{(Must pass |expects a value for parameter ')conninfo})
     }
   end
 
@@ -78,7 +82,7 @@ describe 'barman::server', type: :define do
     let(:params) { { conninfo: 'user=user1 host=server1 db=db1 pass=pass1 port=5432' } }
 
     it {
-      expect { expect(subject).to contain_class('barman::server') }.to raise_error(Puppet::Error, %r{(Must pass |expects a value for parameter ')ssh_command})
+      expect { contain_class('barman::server') }.to raise_error(Puppet::Error, %r{(Must pass |expects a value for parameter ')ssh_command})
     }
   end
 end

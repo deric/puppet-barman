@@ -5,16 +5,10 @@ require 'etc'
 def barman_safe_keygen_and_return(user)
   Etc.passwd do |entry|
     if entry.name == user
-      if File.exist? "#{entry.dir}/.ssh/id_rsa.pub"
-        return File.read("#{entry.dir}/.ssh/id_rsa.pub").chomp
-      else
-        Facter::Util::Resolution.exec("su - #{entry.name} -c \"ssh-keygen -t rsa -P '' -q -f #{entry.dir}/.ssh/id_rsa\"")
-        if File.exist? "#{entry.dir}/.ssh/id_rsa.pub"
-          return File.read("#{entry.dir}/.ssh/id_rsa.pub").chomp
-        else
-          return ''
-        end
-      end
+      return File.read("#{entry.dir}/.ssh/id_rsa.pub").chomp if File.exist? "#{entry.dir}/.ssh/id_rsa.pub"
+
+      Facter::Util::Resolution.exec("su - #{entry.name} -c \"ssh-keygen -t rsa -P '' -q -f #{entry.dir}/.ssh/id_rsa\"")
+      return File.read("#{entry.dir}/.ssh/id_rsa.pub").chomp if File.exist? "#{entry.dir}/.ssh/id_rsa.pub"
     end
   end
   ''

@@ -41,8 +41,8 @@ describe 'barman' do
     it { is_expected.to contain_exec('barman-check-all') }
   end
 
-  context 'manage ssh host keys' do
-    let (:params) do
+  context 'when managing ssh host keys' do
+    let(:params) do
       {
         manage_ssh_host_keys: true
       }
