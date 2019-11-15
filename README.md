@@ -1,4 +1,7 @@
-[![Build Status](https://travis-ci.org/2ndquadrant-it/puppet-barman.svg?branch=master)](https://travis-ci.org/2ndquadrant-it/puppet-barman)
+[![Puppet
+Forge](http://img.shields.io/puppetforge/v/deric/barman.svg)](https://forge.puppetlabs.com/deric/barman) [![Build Status](https://travis-ci.org/deric/puppet-barman.png)](https://travis-ci.org/deric/puppet-barman) [![Puppet Forge
+Downloads](http://img.shields.io/puppetforge/dt/deric/barman.svg)](https://forge.puppetlabs.com/deric/barman/scores)
+
 
 # Barman module for Puppet
 
@@ -9,6 +12,7 @@ PostgreSQL servers to be backed up.
 
 For further information on Barman:
 
+* [Module if fork of `it2ndq-barman`](https://github.com/2ndquadrant-it/puppet-barman)
 * [Project homepage](http://www.pgbarman.org)
 * [Barman documentation](http://docs.pgbarman.org)
 
@@ -53,10 +57,12 @@ use the
 [postgresql](https://github.com/puppetlabs/puppetlabs-postgresql)
 module.
 
-    class { 'postgresql::globals':
-      manage_package_repo => true,
-    }->
-    class { 'barman': }
+```puppet
+class { 'postgresql::globals':
+  manage_package_repo => true,
+}->
+class { 'barman': }
+```
 
 > **Note:** In versions of `it2ndq/barman` > 2.1, setup of PGDG
 > repository can be done automatically by setting the
@@ -70,12 +76,14 @@ All the configuration options that Barman accepts can be defined through Puppet.
 
 Example usage:
 
-    class { barman:
-      logfile            => '/var/log/barman/something_else.log',
-      compression        => 'bzip2',
-      pre_backup_script  => '/usr/bin/touch /tmp/started',
-      post_backup_script => '/usr/bin/touch /tmp/stopped',
-    }
+```puppet
+class { barman:
+  logfile            => '/var/log/barman/something_else.log',
+  compression        => 'bzip2',
+  pre_backup_script  => '/usr/bin/touch /tmp/started',
+  post_backup_script => '/usr/bin/touch /tmp/stopped',
+}
+```
 
 #### Parameters
 
@@ -87,19 +95,21 @@ Parameters can be set in three places:
 
 Parameters can also be set in hiera yaml:
 
-    barman::autoconfigure: true
-    barman::dbuser: 'postgres'
-    barman::dbname: 'postgres'
-    barman::compression: 'gzip'
+```yaml
+barman::autoconfigure: true
+barman::dbuser: 'postgres'
+barman::dbname: 'postgres'
+barman::compression: 'gzip'
 
-    barman::servers:
-      servername:
-        ssh_command: 'ssh postgres@example.org -q'
-        conninfo: 'host=%{fqdn} dbname=thegoods user=backup password=passwordstring'
-        compression: 'gzip'
-        backup_options: 'concurrent_backup'
-        retention_policy: 'RECOVERY WINDOW OF 5 DAYS'
-        archiver: true
+barman::servers:
+  servername:
+    ssh_command: 'ssh postgres@example.org -q'
+    conninfo: 'host=%{fqdn} dbname=thegoods user=backup password=passwordstring'
+    compression: 'gzip'
+    backup_options: 'concurrent_backup'
+    retention_policy: 'RECOVERY WINDOW OF 5 DAYS'
+    archiver: true
+```
 
 These are the available parameters for the `barman` class
 
