@@ -15,6 +15,7 @@ group :development, :unit_tests do
   gem 'rubocop',                 :require => false
   gem 'rubocop-rspec',           :require => false
   gem 'rubocop-i18n',            :require => false
+  gem 'parallel_tests',          :require => false
 end
 
 group :system_tests do

@@ -26,7 +26,7 @@ master, or manually by cloning the repository in your puppet module path.
 The latest version of the module can be installed automatically by supplying
 the repository information to the module installer:
 
-    # puppet module install it2ndq-barman
+    # puppet module install deric-barman
 
 This will take care of the dependencies as well.
 
@@ -47,7 +47,9 @@ The `barman` class installs Barman.
 In order to install Barman with the default options, it is sufficient to just
 include the barman class:
 
-    class { 'barman': }
+```puppet
+class { 'barman': }
+```
 
 The package of latest version of Barman is always available in PGDG
 [apt](http://apt.postgresql.org/) and
