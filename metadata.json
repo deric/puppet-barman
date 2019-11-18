@@ -1,6 +1,6 @@
 {
   "name": "deric-barman",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "author": "Tomas Barton",
   "summary": "Barman (Backup and Recovery Manager for PostgreSQL) module",
   "license": "GPL-3.0",
@@ -9,8 +9,14 @@
   "issues_url": "https://github.com/deric/puppet-barman.git/issues",
   "description": "Automates Barman installation and server setup",
   "dependencies": [
-    {"name":"puppetlabs/stdlib","version_requirement":">=4.6.0 <7.0.0"},
-    {"name":"puppetlabs/postgresql","version_requirement":">=5.0.0 <7.0.0"}
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">=4.6.0 <7.0.0"
+    },
+    {
+      "name": "puppetlabs/postgresql",
+      "version_requirement": ">=5.0.0 <7.0.0"
+    }
   ],
   "operatingsystem_support": [
     {
