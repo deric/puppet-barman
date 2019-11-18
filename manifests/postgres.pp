@@ -20,6 +20,8 @@
 #                     value is set from the 'settings' class.
 # [*barman_home*] - Definition of the barman home directory. The default value
 #                   is set from the 'settings' class.
+# [*manage_cron*] - Whether cron entry should be managed.
+# [*cron_user*] - User to run cron jobs.
 # [*backup_mday*] - Day of the month set in the cron for the backup schedule.
 #                   The default value (undef) ensure daily backups.
 # [*backup_wday*] - Day of the week set in the cron for the backup schedule.
@@ -225,7 +227,6 @@
 #
 class barman::postgres (
   $manage_barman_server          = true,
-  $manage_cron                   = true,
   $manage_dbuser                 = true,
   $manage_ssh_host_keys          = $::barman::manage_ssh_host_keys,
   $host_group                    = $::barman::settings::host_group,
@@ -234,6 +235,8 @@ class barman::postgres (
   $barman_dbuser                 = $::barman::settings::dbuser,
   $barman_dbname                 = $::barman::settings::dbname,
   $barman_home                   = $::barman::settings::home,
+  $manage_cron                   = true,
+  $cron_user                     = 'root',
   $backup_mday                   = undef,
   $backup_wday                   = undef,
   $backup_hour                   = 4,
@@ -384,7 +387,7 @@ class barman::postgres (
   if $manage_cron {
     @@cron { "barman_backup_${postgres_server_id}":
       command  => "[ -x /usr/bin/barman ] && /usr/bin/barman -q backup ${postgres_server_id}",
-      user     => 'root',
+      user     => $cron_user,
       monthday => $backup_mday,
       weekday  => $backup_wday,
       hour     => $backup_hour,

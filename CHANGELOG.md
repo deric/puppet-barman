@@ -6,6 +6,7 @@
 - Allow modifying hba order
 - Allow more recent dependent modules
 - Use `postgres_server_id` as unique identifier (cron, SSH key, authorized key)
+- Add parameter `cron_user` to customize to which crontab jobs are added.
 
 #### Bugfixes
 

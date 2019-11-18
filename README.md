@@ -320,22 +320,26 @@ The only required parameters are **conninfo** and **ssh_command**.
 
 Example:
 
-    barman::server { 'main':
-      conninfo    => 'user=postgres host=server1 password=pg123',
-      ssh_command => 'ssh postgres@server1',
-    }
+```puppet
+barman::server { 'main':
+  conninfo    => 'user=postgres host=server1 password=pg123',
+  ssh_command => 'ssh postgres@server1',
+}
+```
 
 Overriding global configuration is supported for most of the parameters.
 
 Example:
 
-    barman::server { 'main':
-      conninfo           => 'user=postgres host=server1 password=pg123',
-      ssh_command        => 'ssh postgres@server1',
-      compression        => 'bzip2',
-      pre_backup_script  => '/usr/bin/touch /tmp/started',
-      post_backup_script => '/usr/bin/touch /tmp/stopped',
-    }
+```puppet
+barman::server { 'main':
+  conninfo           => 'user=postgres host=server1 password=pg123',
+  ssh_command        => 'ssh postgres@server1',
+  compression        => 'bzip2',
+  pre_backup_script  => '/usr/bin/touch /tmp/started',
+  post_backup_script => '/usr/bin/touch /tmp/stopped',
+}
+```
 
 > **Note**: it is not recommended to specify passwords in the `conninfo`
 > option (especially the ones for the `postgres` user). Use a password
@@ -563,6 +567,8 @@ More details in the **postgres.pp** file.
                       set from the `settings` class.
 * **barman_home** - Definition of the barman home directory. The default value
                     is set from the `settings` class.
+* **manage_cron** - Whether cron entry should be managed. Default: `true`.
+* **cron_user** - User that will be used to run cron jobs. Default: `root`.
 * **backup_mday** - Day of the month set in the cron for the backup schedule.
                     The default value (undef) ensure daily backups.
 * **backup_wday** - Day of the week set in the cron for the backup schedule.
