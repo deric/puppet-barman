@@ -390,7 +390,7 @@ class barman::postgres (
     line => "${server_address}:${server_port}:${barman_dbname}:${barman_dbuser}:${real_password}",
     tag  => "barman-${host_group}",
   }
-  if $streaming_archiver {
+  if $streaming_archiver or $backup_method == 'postgres' {
     @@file_line { "barman_pgpass_content-${::hostname}-replication":
       path => "${barman_home}/.pgpass",
       line => "${server_address}:${server_port}:replication:${barman_dbuser}:${real_password}",

@@ -362,7 +362,7 @@ define barman::server (
   file { "/etc/barman.conf.d/${name}.conf":
     ensure  => $ensure,
     mode    => '0640',
-    owner   => 'root',
+    owner   => $::barman::settings::user,
     group   => $::barman::settings::group,
     content => template($conf_template),
   }
@@ -384,6 +384,7 @@ define barman::server (
         user        => $barman::settings::dbuser,
         address     => $barman::autoconfigure::exported_ipaddress,
         auth_method => 'md5',
+        order       => $barman::settings::hba_entry_order,
         tag         => "barman-${barman::host_group}",
       }
     }
@@ -394,6 +395,7 @@ define barman::server (
       user        => $barman::settings::dbuser,
       address     => $barman::autoconfigure::exported_ipaddress,
       auth_method => 'md5',
+      order       => $barman::settings::hba_entry_order,
       tag         => "barman-${barman::host_group}",
     }
   }
