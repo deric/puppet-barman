@@ -8,6 +8,7 @@
 
 .librarian/
 .tmp/
+pkg/
 
 # Emacs
 *~

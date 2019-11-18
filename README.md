@@ -12,7 +12,7 @@ PostgreSQL servers to be backed up.
 
 For further information on Barman:
 
-* [Module if fork of `it2ndq-barman`](https://github.com/2ndquadrant-it/puppet-barman)
+* [Module is a fork of `it2ndq-barman`](https://github.com/2ndquadrant-it/puppet-barman)
 * [Project homepage](http://www.pgbarman.org)
 * [Barman documentation](http://docs.pgbarman.org)
 
@@ -26,7 +26,10 @@ master, or manually by cloning the repository in your puppet module path.
 The latest version of the module can be installed automatically by supplying
 the repository information to the module installer:
 
-    # puppet module install deric-barman
+
+```bash
+puppet module install deric-barman
+```
 
 This will take care of the dependencies as well.
 
@@ -744,7 +747,7 @@ This module is distributed under GNU GPLv3.
 Many thanks to Alessandro Franceschi <al@lab42.it> for his intensive course
 on Puppet and the ideas he brought to this module.
 
-See [CONTRIBUTORS](CONTRIBUTORS)file for full list.
+See [CONTRIBUTORS](CONTRIBUTORS) file for the full list.
 
 ### Copyright
 

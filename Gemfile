@@ -21,6 +21,7 @@ end
 
 group :development do
   gem 'puppet-blacksmith', git: 'https://github.com/deric/puppet-blacksmith'
+  gem 'pdk', '>= 1.0'
 end
 
 group :system_tests do
