@@ -23,3 +23,8 @@ desc 'Populate CONTRIBUTORS file'
 task :contributors do
   system("git log --format='%aN' | sort -u > CONTRIBUTORS")
 end
+
+task :librarian_spec_prep do
+  sh 'librarian-puppet install --path=spec/fixtures/modules/'
+end
+task spec_prep: :librarian_spec_prep

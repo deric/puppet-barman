@@ -16,6 +16,7 @@ group :development, :unit_tests do
   gem 'rubocop-rspec',           :require => false
   gem 'rubocop-i18n',            :require => false
   gem 'parallel_tests',          :require => false
+  gem 'librarian-puppet', '>= 2.0'
 end
 
 group :system_tests do

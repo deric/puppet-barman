@@ -1,6 +1,3 @@
 fixtures:
-  repositories:
-    stdlib: git://github.com/puppetlabs/puppetlabs-stdlib.git
-    postgresql: git://github.com/puppetlabs/puppetlabs-postgresql.git
   symlinks:
     barman: "#{source_dir}"

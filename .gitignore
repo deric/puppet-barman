@@ -6,6 +6,9 @@
 # Bundler
 .bundle/
 
+.librarian/
+.tmp/
+
 # Emacs
 *~
 \#*\#
@@ -24,6 +27,7 @@ Icon
 
 # This is a library, so don't pin
 Gemfile.lock
+Puppetfile.lock
 
 # rspec
 spec/fixtures
