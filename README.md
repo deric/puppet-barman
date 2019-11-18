@@ -729,7 +729,7 @@ More details in the **postgres.pp** file.
 
 This module is distributed under GNU GPLv3.
 
-## Author
+## Authors
 
 * Giuseppe Broccolo <giuseppe.broccolo@2ndQuadrant.it>
 * Giulio Calacoci <giulio.calacoci@2ndQuadrant.it>
@@ -740,6 +740,8 @@ This module is distributed under GNU GPLv3.
 
 Many thanks to Alessandro Franceschi <al@lab42.it> for his intensive course
 on Puppet and the ideas he brought to this module.
+
+See [CONTRIBUTORS](CONTRIBUTORS)file for full list.
 
 ### Copyright
 

@@ -18,3 +18,8 @@ PuppetLint::RakeTask.new :lint do |config|
 end
 
 PuppetSyntax.exclude_paths = exclude_paths
+
+desc 'Populate CONTRIBUTORS file'
+task :contributors do
+  system("git log --format='%aN' | sort -u > CONTRIBUTORS")
+end
