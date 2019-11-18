@@ -41,9 +41,6 @@ module path.
 
 The `barman` class installs Barman.
 
-> **IMPORTANT:** Currently only Ubuntu and Debian distributions
-> are supported.
-
 In order to install Barman with the default options, it is sufficient to just
 include the barman class:
 
