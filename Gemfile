@@ -19,6 +19,10 @@ group :development, :unit_tests do
   gem 'librarian-puppet', '>= 2.0'
 end
 
+group :development do
+  gem 'puppet-blacksmith', git: 'https://github.com/deric/puppet-blacksmith'
+end
+
 group :system_tests do
   gem 'beaker-rspec',  :require => false
   gem 'serverspec',    :require => false

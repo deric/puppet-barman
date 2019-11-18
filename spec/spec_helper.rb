@@ -18,3 +18,5 @@ RSpec.configure do |c|
     PuppetlabsSpec::Files.cleanup
   end
 end
+
+at_exit { RSpec::Puppet::Coverage.report! }
