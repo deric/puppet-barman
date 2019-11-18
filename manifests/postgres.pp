@@ -394,14 +394,14 @@ class barman::postgres (
   }
 
   # Fill the .pgpass file
-  @@file_line { "barman_pgpass_content-${::hostname}":
+  @@file_line { "barman_pgpass_content-${postgres_server_id}":
     path  => "${barman_home}/.pgpass",
     line  => "${server_address}:${server_port}:${barman_dbname}:${barman_dbuser}:${real_password}",
     match => "^${regexpescape($server_address)}:${server_port}:${barman_dbname}:${barman_dbuser}",
     tag   => "barman-${host_group}",
   }
   if $streaming_archiver or $backup_method == 'postgres' {
-    @@file_line { "barman_pgpass_content-${::hostname}-replication":
+    @@file_line { "barman_pgpass_content-${postgres_server_id}-replication":
       path  => "${barman_home}/.pgpass",
       line  => "${server_address}:${server_port}:replication:${barman_dbuser}:${real_password}",
       match => "^${regexpescape($server_address)}:${server_port}:replication:${barman_dbuser}",
@@ -410,7 +410,7 @@ class barman::postgres (
   }
 
   if $manage_ssh_host_keys {
-    @@sshkey { "postgres-${::hostname}":
+    @@sshkey { "postgres-${postgres_server_id}":
       ensure       => present,
       host_aliases => [$::hostname, $::fqdn, $::ipaddress, $server_address],
       key          => $::sshecdsakey,
@@ -426,7 +426,7 @@ class barman::postgres (
     # into barman and set the archive command
     if ($::postgres_key != undef and $::postgres_key != '') {
       $postgres_key_split = split($::postgres_key, ' ')
-      @@ssh_authorized_key { "postgres-${::hostname}":
+      @@ssh_authorized_key { "postgres-${postgres_server_id}":
         ensure => present,
         user   => $barman_user,
         type   => $postgres_key_split[0],

@@ -1,11 +1,11 @@
-## Release 2.2.0
+## 2019-11-18 - Release 2.2.0
 
 ### Summary
 
-- Forked from [2ndquadrant-it/puppet-barman](https://github.com/2ndquadrant-it/puppet-barman), released as `deric-barman`.
-- A bugfix release.
+- Forked from [2ndquadrant-it/puppet-barman](https://github.com/2ndquadrant-it/puppet-barman), released as `deric-barman`. A bugfix release.
 - Allow modifying hba order
 - Allow more recent dependent modules
+- Use `postgres_server_id` as unique identifier (cron, SSH key, authorized key)
 
 #### Bugfixes
 
