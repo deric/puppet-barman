@@ -5,12 +5,13 @@ require 'spec_helper'
 describe 'barman' do
   let(:facts) do
     {
+      os: { family: 'Debian', name: 'Debian', release: { major: '9', full: '9.11' } },
       puppetversion: `puppet --version`,
       osfamily: 'Debian',
       operatingsystem: 'Debian',
       operatingsystemrelease: '6.0',
       lsbdistid: 'Debian',
-      lsbdistcodename: 'squeeze',
+      lsbdistcodename: 'stretch',
       ipaddress: '10.0.0.1'
     }
   end
