@@ -1,3 +1,19 @@
+## Release 2.2.0
+
+### Summary
+
+- Forked from [2ndquadrant-it/puppet-barman](https://github.com/2ndquadrant-it/puppet-barman), released as `deric-barman`.
+- A bugfix release.
+- Allow modifying hba order
+- Allow more recent dependent modules
+
+#### Bugfixes
+
+- `backup_directory` is twice in template file (2ndquadrant-it/puppet-barman#50)
+- Configurable barman home directory permissions (2ndquadrant-it/puppet-barman#52)
+- Enable `quiet mode` in ssh connection (2ndquadrant-it/puppet-barman#51)
+- Disable archive mode when archiver is disabled (2ndquadrant-it/puppet-barman#56)
+
 ## 2018-01-09 - Release 2.1.0
 
 ### Summary
