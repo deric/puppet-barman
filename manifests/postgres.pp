@@ -224,6 +224,10 @@
 # Copyright 2012-2017 2ndQuadrant Italia
 #
 class barman::postgres (
+  $manage_barman_server          = true,
+  $manage_cron                   = true,
+  $manage_dbuser                 = true,
+  $manage_ssh_host_keys          = $::barman::manage_ssh_host_keys,
   $host_group                    = $::barman::settings::host_group,
   $wal_level                     = 'archive',
   $barman_user                   = $::barman::settings::user,
@@ -260,7 +264,6 @@ class barman::postgres (
   $incoming_wals_directory       = undef,
   $last_backup_maximum_age       = $::barman::last_backup_maximum_age,
   $minimum_redundancy            = $::barman::minimum_redundancy,
-  $manage_ssh_host_keys          = $::barman::manage_ssh_host_keys,
   $network_compression           = $::barman::network_compression,
   $parallel_jobs                 = $::barman::parallel_jobs,
   $path_prefix                   = $::barman::path_prefix,
@@ -311,10 +314,12 @@ class barman::postgres (
   }
 
   # define user used by Barman to connect into PostgreSQL database(s)
-  postgresql::server::role { $barman_dbuser:
-    login         => true,
-    password_hash => postgresql_password($barman_dbuser, $real_password),
-    superuser     => true,
+  if $manage_dbuser {
+    postgresql::server::role { $barman_dbuser:
+      login         => true,
+      password_hash => postgresql_password($barman_dbuser, $real_password),
+      superuser     => true,
+    }
   }
 
   # Collect resources exported by Barman server
@@ -325,83 +330,89 @@ class barman::postgres (
   }
 
   # Export resources to Barman server
-  @@barman::server { $postgres_server_id:
-    conninfo                      => "user=${barman_dbuser} dbname=${barman_dbname} host=${server_address} port=${server_port}",
-    ssh_command                   => "ssh -q ${postgres_user}@${server_address}",
-    tag                           => "barman-${host_group}",
-    archiver                      => $archiver,
-    archiver_batch_size           => $archiver_batch_size,
-    backup_directory              => $backup_directory,
-    backup_method                 => $backup_method,
-    backup_options                => $backup_options,
-    bandwidth_limit               => $bandwidth_limit,
-    basebackups_directory         => $basebackups_directory,
-    basebackup_retry_sleep        => $basebackup_retry_sleep,
-    basebackup_retry_times        => $basebackup_retry_times,
-    check_timeout                 => $check_timeout,
-    compression                   => $compression,
-    custom_compression_filter     => $custom_compression_filter,
-    custom_decompression_filter   => $custom_decompression_filter,
-    errors_directory              => $errors_directory,
-    immediate_checkpoint          => $immediate_checkpoint,
-    incoming_wals_directory       => $incoming_wals_directory,
-    last_backup_maximum_age       => $last_backup_maximum_age,
-    minimum_redundancy            => $minimum_redundancy,
-    network_compression           => $network_compression,
-    path_prefix                   => $path_prefix,
-    parallel_jobs                 => $parallel_jobs,
-    post_archive_retry_script     => $post_archive_retry_script,
-    post_archive_script           => $post_archive_script,
-    post_backup_retry_script      => $post_backup_retry_script,
-    post_backup_script            => $post_backup_script,
-    pre_archive_retry_script      => $pre_archive_retry_script,
-    pre_archive_script            => $pre_archive_script,
-    pre_backup_retry_script       => $pre_backup_retry_script,
-    pre_backup_script             => $pre_backup_script,
-    retention_policy              => $retention_policy,
-    retention_policy_mode         => $retention_policy_mode,
-    reuse_backup                  => $reuse_backup,
-    slot_name                     => $slot_name,
-    streaming_archiver            => $streaming_archiver,
-    streaming_archiver_batch_size => $streaming_archiver_batch_size,
-    streaming_archiver_name       => $streaming_archiver_name,
-    streaming_backup_name         => $streaming_backup_name,
-    streaming_conninfo            => $streaming_conninfo,
-    streaming_wals_directory      => $streaming_wals_directory,
-    tablespace_bandwidth_limit    => $tablespace_bandwidth_limit,
-    wal_retention_policy          => $wal_retention_policy,
-    wals_directory                => $wals_directory,
-    custom_lines                  => $custom_lines,
+  if $manage_barman_server {
+    @@barman::server { $postgres_server_id:
+      conninfo                      => "user=${barman_dbuser} dbname=${barman_dbname} host=${server_address} port=${server_port}",
+      ssh_command                   => "ssh -q ${postgres_user}@${server_address}",
+      tag                           => "barman-${host_group}",
+      archiver                      => $archiver,
+      archiver_batch_size           => $archiver_batch_size,
+      backup_directory              => $backup_directory,
+      backup_method                 => $backup_method,
+      backup_options                => $backup_options,
+      bandwidth_limit               => $bandwidth_limit,
+      basebackups_directory         => $basebackups_directory,
+      basebackup_retry_sleep        => $basebackup_retry_sleep,
+      basebackup_retry_times        => $basebackup_retry_times,
+      check_timeout                 => $check_timeout,
+      compression                   => $compression,
+      custom_compression_filter     => $custom_compression_filter,
+      custom_decompression_filter   => $custom_decompression_filter,
+      errors_directory              => $errors_directory,
+      immediate_checkpoint          => $immediate_checkpoint,
+      incoming_wals_directory       => $incoming_wals_directory,
+      last_backup_maximum_age       => $last_backup_maximum_age,
+      minimum_redundancy            => $minimum_redundancy,
+      network_compression           => $network_compression,
+      path_prefix                   => $path_prefix,
+      parallel_jobs                 => $parallel_jobs,
+      post_archive_retry_script     => $post_archive_retry_script,
+      post_archive_script           => $post_archive_script,
+      post_backup_retry_script      => $post_backup_retry_script,
+      post_backup_script            => $post_backup_script,
+      pre_archive_retry_script      => $pre_archive_retry_script,
+      pre_archive_script            => $pre_archive_script,
+      pre_backup_retry_script       => $pre_backup_retry_script,
+      pre_backup_script             => $pre_backup_script,
+      retention_policy              => $retention_policy,
+      retention_policy_mode         => $retention_policy_mode,
+      reuse_backup                  => $reuse_backup,
+      slot_name                     => $slot_name,
+      streaming_archiver            => $streaming_archiver,
+      streaming_archiver_batch_size => $streaming_archiver_batch_size,
+      streaming_archiver_name       => $streaming_archiver_name,
+      streaming_backup_name         => $streaming_backup_name,
+      streaming_conninfo            => $streaming_conninfo,
+      streaming_wals_directory      => $streaming_wals_directory,
+      tablespace_bandwidth_limit    => $tablespace_bandwidth_limit,
+      wal_retention_policy          => $wal_retention_policy,
+      wals_directory                => $wals_directory,
+      custom_lines                  => $custom_lines,
+    }
   }
 
-  @@cron { "barman_backup_${::hostname}":
-    command  => "[ -x /usr/bin/barman ] && /usr/bin/barman -q backup ${::hostname}",
-    user     => 'root',
-    monthday => $backup_mday,
-    weekday  => $backup_wday,
-    hour     => $backup_hour,
-    minute   => $backup_minute,
-    tag      => "barman-${host_group}",
+  if $manage_cron {
+    @@cron { "barman_backup_${postgres_server_id}":
+      command  => "[ -x /usr/bin/barman ] && /usr/bin/barman -q backup ${postgres_server_id}",
+      user     => 'root',
+      monthday => $backup_mday,
+      weekday  => $backup_wday,
+      hour     => $backup_hour,
+      minute   => $backup_minute,
+      tag      => "barman-${host_group}",
+    }
   }
 
   # Fill the .pgpass file
   @@file_line { "barman_pgpass_content-${::hostname}":
-    path => "${barman_home}/.pgpass",
-    line => "${server_address}:${server_port}:${barman_dbname}:${barman_dbuser}:${real_password}",
-    tag  => "barman-${host_group}",
+    path  => "${barman_home}/.pgpass",
+    line  => "${server_address}:${server_port}:${barman_dbname}:${barman_dbuser}:${real_password}",
+    match => "^${regexpescape($server_address)}:${server_port}:${barman_dbname}:${barman_dbuser}",
+    tag   => "barman-${host_group}",
   }
   if $streaming_archiver or $backup_method == 'postgres' {
     @@file_line { "barman_pgpass_content-${::hostname}-replication":
-      path => "${barman_home}/.pgpass",
-      line => "${server_address}:${server_port}:replication:${barman_dbuser}:${real_password}",
-      tag  => "barman-${host_group}",
+      path  => "${barman_home}/.pgpass",
+      line  => "${server_address}:${server_port}:replication:${barman_dbuser}:${real_password}",
+      match => "^${regexpescape($server_address)}:${server_port}:replication:${barman_dbuser}",
+      tag   => "barman-${host_group}",
     }
   }
 
   if $manage_ssh_host_keys {
     @@sshkey { "postgres-${::hostname}":
       ensure       => present,
-      host_aliases => [$::hostname, $::fqdn, $::ipaddress],
+      host_aliases => [$::hostname, $::fqdn, $::ipaddress, $server_address],
       key          => $::sshecdsakey,
       type         => 'ecdsa-sha2-nistp256',
       target       => "${barman_home}/.ssh/known_hosts",
