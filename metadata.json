@@ -6,7 +6,7 @@
   "license": "GPL-3.0",
   "source": "git://github.com/deric/puppet-barman.git",
   "project_page": "https://github.com/deric/puppet-barman.git",
-  "issues_url": "https://github.com/deric/puppet-barman.git/issues",
+  "issues_url": "https://github.com/deric/puppet-barman/issues",
   "description": "Automates Barman installation and server setup",
   "dependencies": [
     {
