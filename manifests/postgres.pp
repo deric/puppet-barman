@@ -370,7 +370,7 @@ class barman::postgres (
   }
 
   @@cron { "barman_backup_${::hostname}":
-    command  => "[ -x /usr/bin/barman ] && /usr/bin/barman -q backup ${::hostname}",
+    command  => "[ -x /usr/bin/barman ] && /usr/bin/barman -q backup --wait ${::hostname}",
     user     => 'root',
     monthday => $backup_mday,
     weekday  => $backup_wday,
