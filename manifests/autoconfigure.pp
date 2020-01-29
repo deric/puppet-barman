@@ -19,6 +19,8 @@
 #                  (default value is set from the 'settings' class).
 # [*exported_ipaddress*] - The barman server address to allow in the PostgreSQL
 #                          server ph_hba.conf. Defaults to "${::ipaddress}/32".
+# [*archive_cmd_type*] - The archive command to use - either rsync (default) or
+#                        barman-wal-archive
 #
 # === Authors
 #
@@ -38,6 +40,7 @@
 class barman::autoconfigure (
   $host_group         = $::barman::settings::host_group,
   $exported_ipaddress = "${::ipaddress}/32",
+  $archive_cmd_type   = 'rsync',
 ) {
 
   # create the (empty) .pgpass file
@@ -78,8 +81,9 @@ class barman::autoconfigure (
 
   # export the archive command
   @@barman::archive_command { $::barman::barman_fqdn :
-    tag         => "barman-${host_group}",
-    barman_home => $barman::home,
+    tag              => "barman-${host_group}",
+    barman_home      => $barman::home,
+    archive_cmd_type => $archive_cmd_type,
   }
 
   if $::barman::manage_ssh_host_keys {
