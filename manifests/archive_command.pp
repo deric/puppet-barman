@@ -12,6 +12,8 @@
 # [*barman_incoming_dir*] - The Barman WAL incoming directory. The default value will be
 #                           generated here to be something like
 #                           '<barman home>/<postgres_server_id>/incoming'
+# [*archive_cmd_type*] - The archive command to use, either rsync or barman-wal-archive,
+#                        defaults to rsync
 #
 # All parameters that are supported can be changed when the resource 'archive' is
 # created in the 'autoconfigure' class.
@@ -37,6 +39,7 @@ define barman::archive_command (
   $barman_server       = $title,
   $barman_home         = $barman::settings::home,
   $barman_incoming_dir = '',
+  $archive_cmd_type    = 'rsync',
 ) {
 
   # Ensure that 'postgres' class correctly configure the 'archive_command'
@@ -51,8 +54,17 @@ define barman::archive_command (
     default => $barman_incoming_dir,
   }
 
+  case $archive_cmd_type {
+    'barman-wal-archive': {
+      $archive_cmd_real = "barman-wal-archive -U ${barman_user} ${barman_server} ${postgres_server_id} %p"
+    }
+    default: {
+      $archive_cmd_real = "rsync -a %p ${barman_user}@${barman_server}:${real_barman_incoming_dir}/%f"
+    }
+  }
+
   postgresql::server::config_entry { "archive_command_${title}":
     name  => 'archive_command',
-    value => "rsync -a %p ${barman_user}@${barman_server}:${real_barman_incoming_dir}/%f",
+    value => $archive_cmd_real,
   }
 }
