@@ -68,10 +68,10 @@ class { 'barman': }
 
 > **Note:** In versions of `it2ndq/barman` > 2.1, setup of PGDG
 > repository can be done automatically by setting the
-> `manage\_package\_repo` parameter to to `true`. It will be implemented
+> `manage_package_repo` parameter to to `true`. It will be implemented
 > internally by declaring the `postgresql::globals` class. If you need
 > to customize the `postgresql::globals` class declaration, keep the
-> `manage\_package\_repo` parameter disabled in `barman` module and enable
+> `manage_package_repo` parameter disabled in `barman` module and enable
 > it directly in `postgresql::globals` class.
 
 All the configuration options that Barman accepts can be defined through Puppet.
