@@ -98,9 +98,10 @@ class barman::autoconfigure (
   }
 
   # export the 'barman' SSH key - create if not present
+  # generated using Facter function
   if ($::barman_key != undef and $::barman_key != '') {
     $barman_key_splitted = split($::barman_key, ' ')
-    @@ssh_authorized_key { $barman::settings::user:
+    @@ssh_authorized_key { "postgres-${::barman::barman_fqdn}":
       ensure => present,
       user   => 'postgres',
       type   => $barman_key_splitted[0],

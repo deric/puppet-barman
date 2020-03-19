@@ -1,3 +1,11 @@
+## UNRELEASED - Release 2.3.0
+
+- BC: Changed ssh key name from `barman` to `postgres-${fqdn}` in order to support multiple barman servers
+- `archive_command` might use `rsync` or `barman-wal-archive`
+- add --wait to barman backup cronjob
+- Puppet 6 support
+
+
 ## 2019-11-18 - Release 2.2.0
 
 ### Summary

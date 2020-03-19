@@ -30,6 +30,36 @@ describe 'barman' do
   it { is_expected.to contain_file('/var/lib/barman') }
   it { is_expected.to contain_exec('barman-check-all') }
 
+  context 'autoconfigure' do
+    let(:params) do
+      {
+        autoconfigure: true,
+        barman_fqdn: 'test',
+      }
+    end
+    let(:facts) do
+      super().merge(
+        { 'barman_key' => 'ssh-rsa AAABBB' }
+      )
+    end
+
+    it {
+      expect(exported_resources).to contain_ssh_authorized_key('postgres-test').with(
+        'user' => 'postgres',
+        'type' => 'ssh-rsa',
+        'key'  => 'AAABBB',
+      )
+    }
+
+    it { is_expected.to contain_file('/var/lib/barman/.pgpass')
+      .with({
+        'ensure' => 'file',
+      })
+    }
+
+  end
+
+
   # Creates the new home and launches barman check all
   context 'with different home' do
     let(:params) do
