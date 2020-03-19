@@ -10,7 +10,7 @@ describe 'barman::server', type: :define do
       operatingsystemrelease: '6.0',
       lsbdistid: 'Debian',
       lsbdistcodename: 'squeeze',
-      ipaddress: '10.0.0.1'
+      ipaddress: '10.0.0.1',
     }
   end
 
@@ -19,7 +19,7 @@ describe 'barman::server', type: :define do
   let(:params) do
     {
       conninfo: 'user=user1 host=server1 db=db1 pass=pass1 port=5432',
-      ssh_command: 'ssh postgres@server1'
+      ssh_command: 'ssh postgres@server1',
     }
   end
 
@@ -50,7 +50,7 @@ describe 'barman::server', type: :define do
         compression: 'bzip2',
         pre_backup_script: 'true',
         post_backup_script: 'true',
-        custom_lines: 'thisisastring'
+        custom_lines: 'thisisastring',
       }
     end
 

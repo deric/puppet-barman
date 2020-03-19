@@ -12,7 +12,7 @@ describe 'barman' do
       operatingsystemrelease: '6.0',
       lsbdistid: 'Debian',
       lsbdistcodename: 'stretch',
-      ipaddress: '10.0.0.1'
+      ipaddress: '10.0.0.1',
     }
   end
 
@@ -30,7 +30,7 @@ describe 'barman' do
   it { is_expected.to contain_file('/var/lib/barman') }
   it { is_expected.to contain_exec('barman-check-all') }
 
-  context 'autoconfigure' do
+  context 'with autoconfigure' do
     let(:params) do
       {
         autoconfigure: true,
@@ -39,7 +39,7 @@ describe 'barman' do
     end
     let(:facts) do
       super().merge(
-        { 'barman_key' => 'ssh-rsa AAABBB' }
+        { 'barman_key' => 'ssh-rsa AAABBB' },
       )
     end
 
@@ -47,24 +47,23 @@ describe 'barman' do
       expect(exported_resources).to contain_ssh_authorized_key('postgres-test').with(
         'user' => 'postgres',
         'type' => 'ssh-rsa',
-        'key'  => 'AAABBB',
+        'key' => 'AAABBB',
       )
     }
 
-    it { is_expected.to contain_file('/var/lib/barman/.pgpass')
-      .with({
-        'ensure' => 'file',
-      })
+    it {
+      is_expected.to contain_file('/var/lib/barman/.pgpass')
+        .with({
+                'ensure' => 'file',
+              })
     }
-
   end
-
 
   # Creates the new home and launches barman check all
   context 'with different home' do
     let(:params) do
       {
-        home: '/srv/barman'
+        home: '/srv/barman',
       }
     end
 
@@ -75,7 +74,7 @@ describe 'barman' do
   context 'when managing ssh host keys' do
     let(:params) do
       {
-        manage_ssh_host_keys: true
+        manage_ssh_host_keys: true,
       }
     end
 
@@ -87,7 +86,7 @@ describe 'barman' do
   context 'with different log' do
     let(:params) do
       {
-        logfile: '/tmp/foo'
+        logfile: '/tmp/foo',
       }
     end
 
@@ -101,7 +100,7 @@ describe 'barman' do
         compression: false,
         pre_backup_script: '/bin/false',
         post_backup_script: '/bin/false',
-        custom_lines: 'thisisastring'
+        custom_lines: 'thisisastring',
       }
     end
 
@@ -124,7 +123,7 @@ describe 'barman' do
     context 'with manage_package_repo => true' do
       let(:params) do
         {
-          manage_package_repo: true
+          manage_package_repo: true,
         }
       end
 
@@ -134,7 +133,7 @@ describe 'barman' do
     context 'with manage_package_repo => false' do
       let(:params) do
         {
-          manage_package_repo: false
+          manage_package_repo: false,
         }
       end
 

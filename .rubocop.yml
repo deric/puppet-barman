@@ -16,7 +16,7 @@ AllCops:
   - "**/Puppetfile"
   - "**/Vagrantfile"
   - "**/Guardfile"
-Metrics/LineLength:
+Layout/LineLength:
   Description: People have wide screens, use them.
   Max: 200
 GetText:
@@ -84,9 +84,15 @@ Style/MethodCalledOnDoEndBlock:
   Enabled: true
 Style/StringMethods:
   Enabled: true
+Style/HashEachMethods:
+  Enabled: true
+Style/HashTransformKeys:
+  Enabled: true
+Style/HashTransformValues:
+  Enabled: true
 Layout/EndOfLine:
   Enabled: false
-Layout/IndentHeredoc:
+Layout/HeredocIndentation:
   Enabled: false
 Metrics/AbcSize:
   Enabled: false
@@ -120,3 +126,5 @@ Style/IfUnlessModifier:
   Enabled: false
 Style/SymbolProc:
   Enabled: false
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: consistent_comma
