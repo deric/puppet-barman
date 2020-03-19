@@ -226,12 +226,17 @@
 # Copyright 2012-2017 2ndQuadrant Italia
 #
 class barman::postgres (
+  $manage_barman_server          = true,
+  $manage_dbuser                 = true,
+  $manage_ssh_host_keys          = $::barman::manage_ssh_host_keys,
   $host_group                    = $::barman::settings::host_group,
   $wal_level                     = 'archive',
   $barman_user                   = $::barman::settings::user,
   $barman_dbuser                 = $::barman::settings::dbuser,
   $barman_dbname                 = $::barman::settings::dbname,
   $barman_home                   = $::barman::settings::home,
+  $manage_cron                   = true,
+  $cron_user                     = 'root',
   $backup_mday                   = undef,
   $backup_wday                   = undef,
   $backup_hour                   = 4,

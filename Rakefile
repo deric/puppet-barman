@@ -17,6 +17,7 @@ PuppetLint::RakeTask.new :lint do |config|
   config.ignore_paths = exclude_paths
 end
 
+PuppetLint.configuration.send('disable_140chars')
 PuppetSyntax.exclude_paths = exclude_paths
 
 desc 'Populate CONTRIBUTORS file'
