@@ -228,7 +228,6 @@
 class barman::postgres (
   $manage_barman_server          = true,
   $manage_dbuser                 = true,
-  $manage_ssh_host_keys          = $::barman::manage_ssh_host_keys,
   $host_group                    = $::barman::settings::host_group,
   $wal_level                     = 'archive',
   $barman_user                   = $::barman::settings::user,
