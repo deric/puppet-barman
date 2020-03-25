@@ -277,6 +277,7 @@ class barman (
   $tablespace_bandwidth_limit    = $::barman::settings::tablespace_bandwidth_limit,
   $wal_retention_policy          = $::barman::settings::wal_retention_policy,
   $custom_lines                  = $::barman::settings::custom_lines,
+  $archive_cmd_type              = $::barman::settings::archive_cmd_type,
   $servers                       = undef,
 ) inherits barman::settings {
 
@@ -481,6 +482,7 @@ class barman (
     class { '::barman::autoconfigure':
       exported_ipaddress => $exported_ipaddress,
       host_group         => $host_group,
-      }
+      archive_cmd_type   => $archive_cmd_type,
+    }
   }
 }

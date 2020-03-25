@@ -45,9 +45,16 @@ describe 'barman' do
 
     it {
       expect(exported_resources).to contain_ssh_authorized_key('postgres-test').with(
-        'user' => 'postgres',
-        'type' => 'ssh-rsa',
-        'key' => 'AAABBB',
+        user: 'postgres',
+        type: 'ssh-rsa',
+        key: 'AAABBB',
+      )
+    }
+
+    it {
+      expect(exported_resources).to contain_barman__archive_command('test').with(
+        archive_cmd_type: 'rsync',
+        barman_home: '/var/lib/barman',
       )
     }
 
@@ -57,6 +64,23 @@ describe 'barman' do
                 'ensure' => 'file',
               })
     }
+
+    context 'with barman wal archive command' do
+      let(:params) do
+        {
+          autoconfigure: true,
+          archive_cmd_type: 'barman-wal-archive',
+          barman_fqdn: 'wal-test',
+        }
+      end
+
+      it {
+        expect(exported_resources).to contain_barman__archive_command('wal-test').with(
+          archive_cmd_type: 'barman-wal-archive',
+          barman_home: '/var/lib/barman',
+        )
+      }
+    end
   end
 
   # Creates the new home and launches barman check all
