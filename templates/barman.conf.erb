@@ -6,7 +6,7 @@
 [barman]
 barman_home = <%= @home %>
 barman_user = <%= @user %>
-configuration_files_directory = <%= conf_files_dir %>
+configuration_files_directory = <%= configuration_files_directory %>
 log_file = <%= @logfile %>
 archiver = <%= @archiver %>
 <%- if @archiver_batch_size -%>
@@ -105,7 +105,6 @@ wal_retention_policy = <%= @wal_retention_policy %>
 <%- if @reuse_backup != false -%>
 reuse_backup = <%= @reuse_backup %>
 <%- end -%>
-configuration_files_directory = /etc/barman.conf.d
 <%- if @custom_lines -%>
 <%= @custom_lines %>
 <%- end -%>
