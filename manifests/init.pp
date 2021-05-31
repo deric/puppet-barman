@@ -417,7 +417,7 @@ class barman (
     tag    => 'postgresql',
   }
 
-  file { '/etc/barman.conf.d':
+  file { '/etc/barman.d':
     ensure  => $ensure_directory,
     purge   => $purge_unknown_conf,
     recurse => true,
@@ -427,13 +427,23 @@ class barman (
     require => Package['barman'],
   }
 
-  file { '/etc/barman.conf':
+  file { '/etc/barman':
+    ensure  => $ensure_directory,
+    purge   => $purge_unknown_conf,
+    recurse => true,
+    owner   => $user,
+    group   => $group,
+    mode    => '0750',
+    require => Package['barman'],
+  }
+
+  file { '/etc/barman/barman.conf':
     ensure  => $ensure_file,
     owner   => $user,
     group   => $group,
     mode    => '0640',
     content => template($conf_template),
-    require => File['/etc/barman.conf.d'],
+    require => File['/etc/barman'],
   }
 
   file { $home:
