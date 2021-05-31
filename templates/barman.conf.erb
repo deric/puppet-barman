@@ -6,6 +6,7 @@
 [barman]
 barman_home = <%= @home %>
 barman_user = <%= @user %>
+configuration_files_directory = <%= conf_files_dir %>
 log_file = <%= @logfile %>
 archiver = <%= @archiver %>
 <%- if @archiver_batch_size -%>
