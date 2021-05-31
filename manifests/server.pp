@@ -210,7 +210,6 @@ define barman::server (
   $basebackup_retry_times        = $::barman::basebackup_retry_times,
   $check_timeout                 = $::barman::check_timeout,
   $compression                   = $::barman::compression,
-  $configuration_files_directory = $::barman::configuration_files_directory,
   $custom_compression_filter     = $::barman::custom_compression_filter,
   $custom_decompression_filter   = $::barman::custom_decompression_filter,
   $errors_directory              = undef,
@@ -307,9 +306,6 @@ define barman::server (
 
   if $check_timeout != undef {
     validate_integer($check_timeout)
-  }
-  if $configuration_files_directory != undef {
-    validate_absolute_path($configuration_files_directory)
   }
 
   if $custom_compression_filter != undef {
