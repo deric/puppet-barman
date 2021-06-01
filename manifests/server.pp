@@ -257,7 +257,7 @@ define barman::server (
   }
 
   # check if 'description' has been correctly configured
-  validate_re($name, '^[0-9a-z_\-/]*$', "${name} is not a valid name. Please only use lowercase letters, numbers, slashes, underscores and hyphens.")
+  validate_re($name, '^[0-9a-z_\-/.]*$', "${name} is not a valid name. Please only use lowercase letters, numbers, slashes, underscores and hyphens.")
 
   # check if immediate checkpoint is a boolean
   validate_bool($immediate_checkpoint)
