@@ -104,7 +104,7 @@ wal_retention_policy = <%= @wal_retention_policy %>
 <%- if @reuse_backup != false -%>
 reuse_backup = <%= @reuse_backup %>
 <%- end -%>
-configuration_files_directory = /etc/barman.conf.d
+configuration_files_directory = /etc/barman.d
 <%- if @custom_lines -%>
 <%= @custom_lines %>
 <%- end -%>
