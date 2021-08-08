@@ -1,10 +1,13 @@
-## UNRELEASED - Release 2.3.0
+## UNRELEASED - Release 3.0.0
 
 - BC: Changed ssh key name from `barman` to `postgres-${fqdn}` in order to support multiple barman servers
 - `archive_command` might use `rsync` or `barman-wal-archive`
 - add --wait to barman backup cronjob
-- Puppet 6 support
-
+- Puppet 6 support and drop Puppet 5 support
+- Drop deprecated Linux distributions
+- Bump minimum and maximum module version requirements
+- Keep only required `facts` in unit tests
+- Unit tests performance improvement by making `puppetversion` fact to run only once
 
 ## 2019-11-18 - Release 2.2.0
 
