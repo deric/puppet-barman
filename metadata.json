@@ -1,21 +1,20 @@
 {
   "name": "deric-barman",
-  "version": "2.3.0-dev",
+  "version": "3.0.0-dev",
   "author": "Tomas Barton",
   "summary": "Barman (Backup and Recovery Manager for PostgreSQL) module",
   "license": "GPL-3.0",
   "source": "git://github.com/deric/puppet-barman.git",
   "project_page": "https://github.com/deric/puppet-barman.git",
   "issues_url": "https://github.com/deric/puppet-barman/issues",
-  "description": "Automates Barman installation and server setup",
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">=4.6.0 <7.0.0"
+      "version_requirement": ">= 4.13.1 < 8.0.0"
     },
     {
       "name": "puppetlabs/postgresql",
-      "version_requirement": ">=5.0.0 <7.0.0"
+      "version_requirement": ">= 6.10.2 < 8.0.0"
     },
     { "name": "puppetlabs-sshkeys_core",
       "version_requirement": "> 1.0.0"
@@ -28,8 +27,6 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "6",
-        "7",
         "8",
         "9",
         "10"
@@ -38,32 +35,30 @@
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "10.04",
-        "12.04",
-        "14.04",
         "16.04",
-        "18.04"
+        "18.04",
+        "20.04"
       ]
     },
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "6",
-        "7"
+        "7",
+        "8"
       ]
     },
     {
       "operatingsystem": "CentOS",
       "operatingsystemrelease": [
-        "6",
-        "7"
+        "7",
+        "8"
       ]
     }
   ],
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.0.0 < 7.0.0"
+      "version_requirement": ">= 6.1.0 < 8.0.0"
     }
   ]
 }
