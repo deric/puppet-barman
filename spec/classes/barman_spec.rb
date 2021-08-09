@@ -2,16 +2,19 @@
 
 require 'spec_helper'
 
+$PUPPET_VERSION = `puppet --version`
+
 describe 'barman' do
   let(:facts) do
     {
-      os: { family: 'Debian', name: 'Debian', release: { major: '9', full: '9.11' } },
-      puppetversion: `puppet --version`,
-      osfamily: 'Debian',
-      operatingsystem: 'Debian',
-      operatingsystemrelease: '6.0',
-      lsbdistid: 'Debian',
-      lsbdistcodename: 'stretch',
+      os: {
+        family: 'Debian',
+        name: 'Debian',
+        distro: { codename: 'stretch'},
+        release: { major: '9', full: '9.11' }
+      },
+
+      puppetversion: $PUPPET_VERSION,
       ipaddress: '10.0.0.1',
     }
   end
