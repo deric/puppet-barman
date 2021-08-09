@@ -1,6 +1,6 @@
 {
   "name": "deric-barman",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "author": "Tomas Barton",
   "summary": "Barman (Backup and Recovery Manager for PostgreSQL) module",
   "license": "GPL-3.0",
@@ -16,10 +16,12 @@
       "name": "puppetlabs/postgresql",
       "version_requirement": ">= 6.10.2 < 8.0.0"
     },
-    { "name": "puppetlabs-sshkeys_core",
+    {
+      "name": "puppetlabs-sshkeys_core",
       "version_requirement": "> 1.0.0"
     },
-    { "name": "puppetlabs-cron_core",
+    {
+      "name": "puppetlabs-cron_core",
       "version_requirement": "> 1.0.0"
     }
   ],
