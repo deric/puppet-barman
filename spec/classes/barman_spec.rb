@@ -23,10 +23,11 @@ describe 'barman' do
   it { is_expected.to contain_package('barman').with_tag('postgresql') }
 
   # Creates the configurations
-  it { is_expected.to contain_file('/etc/barman.d') }
+  it { is_expected.to contain_file('/etc/barman').with_ensure('directory') }
+  it { is_expected.to contain_file('/etc/barman.d').with_ensure('directory') }
   it { is_expected.to contain_file('/etc/logrotate.d/barman') }
-  it { is_expected.to contain_file('/etc/barman.conf').with_content(%r{\[barman\]}) }
-  it { is_expected.to contain_file('/etc/barman.conf').with_content(%r{compression = gzip}) }
+  it { is_expected.to contain_file('/etc/barman/barman.conf').with_content(%r{\[barman\]}) }
+  it { is_expected.to contain_file('/etc/barman/barman.conf').with_content(%r{compression = gzip}) }
   it { is_expected.not_to contain_file('/etc/barman.conf').with_content(%r{_backup_script}) }
 
   # Creates barman home and launches 'barman check all'
@@ -131,10 +132,10 @@ describe 'barman' do
       }
     end
 
-    it { is_expected.not_to contain_file('/etc/barman.conf').with_content(%r{compression}) }
-    it { is_expected.to contain_file('/etc/barman.conf').with_content(%r{pre_backup_script = /bin/false}) }
-    it { is_expected.to contain_file('/etc/barman.conf').with_content(%r{post_backup_script = /bin/false}) }
-    it { is_expected.to contain_file('/etc/barman.conf').with_content(%r{thisisastring}) }
+    it { is_expected.not_to contain_file('/etc/barman/barman.conf').with_content(%r{compression}) }
+    it { is_expected.to contain_file('/etc/barman/barman.conf').with_content(%r{pre_backup_script = /bin/false}) }
+    it { is_expected.to contain_file('/etc/barman/barman.conf').with_content(%r{post_backup_script = /bin/false}) }
+    it { is_expected.to contain_file('/etc/barman/barman.conf').with_content(%r{thisisastring}) }
   end
 
   # Test interaction between manage_package_repo parameter and postgresql::global
