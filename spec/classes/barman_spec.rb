@@ -23,7 +23,7 @@ describe 'barman' do
   it { is_expected.to contain_package('barman').with_tag('postgresql') }
 
   # Creates the configurations
-  it { is_expected.to contain_file('/etc/barman.conf.d') }
+  it { is_expected.to contain_file('/etc/barman.d') }
   it { is_expected.to contain_file('/etc/logrotate.d/barman') }
   it { is_expected.to contain_file('/etc/barman.conf').with_content(%r{\[barman\]}) }
   it { is_expected.to contain_file('/etc/barman.conf').with_content(%r{compression = gzip}) }

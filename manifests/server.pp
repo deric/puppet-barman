@@ -257,7 +257,7 @@ define barman::server (
   }
 
   # check if 'description' has been correctly configured
-  validate_re($name, '^[0-9a-z_\-/]*$', "${name} is not a valid name. Please only use lowercase letters, numbers, slashes, underscores and hyphens.")
+  validate_re($name, '^[0-9a-z_\-/.]*$', "${name} is not a valid name. Please only use lowercase letters, numbers, slashes, underscores and hyphens.")
 
   # check if immediate checkpoint is a boolean
   validate_bool($immediate_checkpoint)
@@ -359,7 +359,7 @@ define barman::server (
     notice 'The \'custom_lines\' option is deprecated. Please use $conf_template for custom configuration'
   }
 
-  file { "/etc/barman.conf.d/${name}.conf":
+  file { "/etc/barman.d/${name}.conf":
     ensure  => $ensure,
     mode    => '0640',
     owner   => $::barman::settings::user,
@@ -371,7 +371,7 @@ define barman::server (
   exec { "barman-check-${name}":
     command     => "barman check ${name} || true",
     provider    => shell,
-    subscribe   => File["/etc/barman.conf.d/${name}.conf"],
+    subscribe   => File["/etc/barman.d/${name}.conf"],
     refreshonly => true
   }
   if($barman::autoconfigure) {

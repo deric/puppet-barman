@@ -28,17 +28,17 @@ describe 'barman::server', type: :define do
   end
 
   # Compiles template
-  it { is_expected.to contain_file('/etc/barman.conf.d/server1.conf').with_content(%r{\[server1\]}) }
-  it { is_expected.to contain_file('/etc/barman.conf.d/server1.conf').with_content(%r{conninfo = user=user1}) }
-  it { is_expected.to contain_file('/etc/barman.conf.d/server1.conf').with_content(%r{ssh_command = ssh postgres@server1}) }
+  it { is_expected.to contain_file('/etc/barman.d/server1.conf').with_content(%r{\[server1\]}) }
+  it { is_expected.to contain_file('/etc/barman.d/server1.conf').with_content(%r{conninfo = user=user1}) }
+  it { is_expected.to contain_file('/etc/barman.d/server1.conf').with_content(%r{ssh_command = ssh postgres@server1}) }
 
   # Runs 'barman check' on the new server
   it { is_expected.to contain_exec('barman-check-server1').with_command('barman check server1 || true') }
 
   # Adds compression settings when asked
   context 'without settings' do
-    it { is_expected.to contain_file('/etc/barman.conf.d/server1.conf').with_content(%r{compression = gzip}) }
-    it { is_expected.not_to contain_file('/etc/barman.conf.d/server1.conf').with_content(%r{_backup_script}) }
+    it { is_expected.to contain_file('/etc/barman.d/server1.conf').with_content(%r{compression = gzip}) }
+    it { is_expected.not_to contain_file('/etc/barman.d/server1.conf').with_content(%r{_backup_script}) }
   end
   # Does not add compression settings when not asked
 
@@ -54,10 +54,10 @@ describe 'barman::server', type: :define do
       }
     end
 
-    it { is_expected.to contain_file('/etc/barman.conf.d/server1.conf').with_content(%r{compression = bzip2}) }
-    it { is_expected.to contain_file('/etc/barman.conf.d/server1.conf').with_content(%r{pre_backup_script = }) }
-    it { is_expected.to contain_file('/etc/barman.conf.d/server1.conf').with_content(%r{post_backup_script = }) }
-    it { is_expected.to contain_file('/etc/barman.conf.d/server1.conf').with_content(%r{thisisastring}) }
+    it { is_expected.to contain_file('/etc/barman.d/server1.conf').with_content(%r{compression = bzip2}) }
+    it { is_expected.to contain_file('/etc/barman.d/server1.conf').with_content(%r{pre_backup_script = }) }
+    it { is_expected.to contain_file('/etc/barman.d/server1.conf').with_content(%r{post_backup_script = }) }
+    it { is_expected.to contain_file('/etc/barman.d/server1.conf').with_content(%r{thisisastring}) }
   end
 
   # Fails with an invalid name
