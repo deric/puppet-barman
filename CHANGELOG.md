@@ -1,4 +1,4 @@
-## UNRELEASED - Release 3.0.0
+## 2021-08-09 - Release 3.0.0
 
 - BC: Changed ssh key name from `barman` to `postgres-${fqdn}` in order to support multiple barman servers
 - `archive_command` might use `rsync` or `barman-wal-archive`
@@ -8,6 +8,7 @@
 - Bump minimum and maximum module version requirements
 - Keep only required `facts` in unit tests
 - Unit tests performance improvement by making `puppetversion` fact to run only once
+- Changed config directory from `/etc/barman.conf.d` to `/etc/barman.d`
 
 ## 2019-11-18 - Release 2.2.0
 

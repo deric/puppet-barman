@@ -1,6 +1,6 @@
 {
   "name": "deric-barman",
-  "version": "3.0.0-dev",
+  "version": "3.0.0",
   "author": "Tomas Barton",
   "summary": "Barman (Backup and Recovery Manager for PostgreSQL) module",
   "license": "GPL-3.0",
