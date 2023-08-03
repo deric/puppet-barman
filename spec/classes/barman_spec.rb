@@ -23,12 +23,34 @@ describe 'barman' do
   it { is_expected.to contain_package('barman').with_tag('postgresql') }
 
   # Creates the configurations
-  it { is_expected.to contain_file('/etc/barman').with_ensure('directory') }
   it { is_expected.to contain_file('/etc/barman.d').with_ensure('directory') }
   it { is_expected.to contain_file('/etc/logrotate.d/barman') }
-  it { is_expected.to contain_file('/etc/barman/barman.conf').with_content(%r{\[barman\]}) }
-  it { is_expected.to contain_file('/etc/barman/barman.conf').with_content(%r{compression = gzip}) }
-  it { is_expected.not_to contain_file('/etc/barman.conf').with_content(%r{_backup_script}) }
+
+  context 'with default conf_file_path' do
+    let(:params) do
+      {
+        conf_file_path: '/etc/barman/barman.conf'
+      }
+    end
+
+    it { is_expected.to contain_file('/etc/barman').with_ensure('directory') }
+    it { is_expected.to contain_file('/etc/barman/barman.conf').with_content(%r{\[barman\]}) }
+    it { is_expected.to contain_file('/etc/barman/barman.conf').with_content(%r{compression = gzip}) }
+    it { is_expected.not_to contain_file('/etc/barman.conf').with_content(%r{_backup_script}) }
+  end
+
+  context 'with conf_file_path override' do
+    let(:params) do
+      {
+        conf_file_path: '/etc/barman.conf'
+      }
+    end
+
+    it { is_expected.not_to contain_file('/etc/barman').with_ensure('directory') }
+    it { is_expected.to contain_file('/etc/barman.conf').with_content(%r{\[barman\]}) }
+    it { is_expected.to contain_file('/etc/barman.conf').with_content(%r{compression = gzip}) }
+    it { is_expected.not_to contain_file('/etc/barman.conf').with_content(%r{_backup_script}) }
+  end
 
   # Creates barman home and launches 'barman check all'
   it { is_expected.to contain_file('/var/lib/barman') }

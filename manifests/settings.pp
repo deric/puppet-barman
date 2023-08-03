@@ -56,6 +56,7 @@ class barman::settings (
   $basebackup_retry_sleep        = false,
   $basebackup_retry_times        = false,
   $check_timeout                 = undef,
+  $conf_file_path                = '/etc/barman/barman.conf',
   $custom_compression_filter     = undef,
   $custom_decompression_filter   = undef,
   $compression                   = 'gzip',
