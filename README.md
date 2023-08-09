@@ -1,5 +1,5 @@
 [![Puppet
-Forge](http://img.shields.io/puppetforge/v/deric/barman.svg)](https://forge.puppetlabs.com/deric/barman) [![Build Status](https://travis-ci.org/deric/puppet-barman.png)](https://travis-ci.org/deric/puppet-barman) [![Puppet Forge
+Forge](http://img.shields.io/puppetforge/v/deric/barman.svg)](https://forge.puppetlabs.com/deric/barman) [![Test](https://github.com/deric/puppet-barman/actions/workflows/test.yml/badge.svg)](https://github.com/deric/puppet-barman/actions/workflows/test.yml) [![Puppet Forge
 Downloads](http://img.shields.io/puppetforge/dt/deric/barman.svg)](https://forge.puppetlabs.com/deric/barman/scores)
 
 
