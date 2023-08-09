@@ -198,7 +198,7 @@ define barman::server (
   Boolean                        $active                        = true,
   Enum['present', 'absent']      $ensure                        = 'present',
   String                         $conf_template                 = 'barman/server.conf.erb',
-  String                         $description                   = $name,
+  Pattern[/^[\w]*$/]             $description                   = $name,
   Boolean                        $archiver                      = $barman::archiver,
   Optional[Integer]              $archiver_batch_size           = $barman::archiver_batch_size,
   Optional[Stdlib::Absolutepath] $backup_directory              = undef,
@@ -244,9 +244,6 @@ define barman::server (
   Optional[Stdlib::Absolutepath] $wals_directory                = undef,
   Optional[String]               $custom_lines                  = $barman::custom_lines,
 ) {
-  # check if 'description' has been correctly configured
-  validate_re($name, '^[0-9a-z_\-/.]*$', "${name} is not a valid name. Please only use lowercase letters, numbers, slashes, underscores and hyphens.")
-
   if $custom_lines != '' {
     notice 'The \'custom_lines\' option is deprecated. Please use $conf_template for custom configuration'
   }
@@ -264,13 +261,14 @@ define barman::server (
     command     => "barman check ${name} || true",
     provider    => shell,
     subscribe   => File["/etc/barman.d/${name}.conf"],
-    refreshonly => true
+    refreshonly => true,
   }
+
   if($barman::autoconfigure) {
     # export configuration for the pg_hba.conf
     if ($streaming_archiver or $backup_method == 'postgres') {
-      @@postgresql::server::pg_hba_rule { "barman ${::hostname}->${name} client access (replication)":
-        description => "barman ${::hostname}->${name} client access",
+      @@postgresql::server::pg_hba_rule { "barman ${facts['networking']['hostname']}->${name} client access (replication)":
+        description => "barman ${facts['networking']['hostname']}->${name} client access",
         type        => 'host',
         database    => 'replication',
         user        => $barman::dbuser,
@@ -280,8 +278,8 @@ define barman::server (
         tag         => "barman-${barman::host_group}",
       }
     }
-    @@postgresql::server::pg_hba_rule { "barman ${::hostname}->${name} client access":
-      description => "barman ${::hostname}->${name} client access",
+    @@postgresql::server::pg_hba_rule { "barman ${facts['networking']['hostname']}->${name} client access":
+      description => "barman ${facts['networking']['hostname']}->${name} client access",
       type        => 'host',
       database    => $barman::dbname,
       user        => $barman::dbuser,
@@ -291,5 +289,4 @@ define barman::server (
       tag         => "barman-${barman::host_group}",
     }
   }
-
 }
