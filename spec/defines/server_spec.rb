@@ -3,16 +3,8 @@
 require 'spec_helper'
 
 describe 'barman::server', type: :define do
-  let(:facts) do
-    {
-      osfamily: 'Debian',
-      operatingsystem: 'Debian',
-      operatingsystemrelease: '6.0',
-      lsbdistid: 'Debian',
-      lsbdistcodename: 'squeeze',
-      ipaddress: '10.0.0.1',
-    }
-  end
+  _, os_facts = on_supported_os.first
+  let(:facts) { os_facts }
 
   # Example configuration
   let(:title) { 'server1' }
@@ -64,9 +56,7 @@ describe 'barman::server', type: :define do
   context 'with invalid name' do
     let(:title) { 'server!@#%' }
 
-    it {
-      expect { is_expected.to contain_class('barman::server') }.to raise_error(Puppet::Error, %r{is not a valid name})
-    }
+    it { is_expected.to raise_error(Puppet::Error, %r{'description' expects a match}) }
   end
 
   # Fails without conninfo and ssh_command

@@ -224,174 +224,67 @@
 # Copyright 2012-2017 2ndQuadrant Italia
 #
 class barman (
-  $user                          = $barman::settings::user,
-  $group                         = $barman::settings::group,
-  $ensure                        = 'present',
-  $conf_file_path                = $barman::settings::conf_file_path,
-  $conf_template                 = 'barman/barman.conf.erb',
-  $logrotate_template            = 'barman/logrotate.conf.erb',
-  $barman_fqdn                   = $::fqdn,
-  $archiver                      = $barman::settings::archiver,
-  $archiver_batch_size           = $barman::settings::archiver_batch_size,
-  $autoconfigure                 = $barman::settings::autoconfigure,
-  $backup_method                 = $barman::settings::backup_method,
-  $backup_options                = $barman::settings::backup_options,
-  $bandwidth_limit               = $barman::settings::bandwidth_limit,
-  $basebackup_retry_sleep        = $barman::settings::basebackup_retry_sleep,
-  $basebackup_retry_times        = $barman::settings::basebackup_retry_times,
-  $check_timeout                 = $barman::settings::check_timeout,
-  $compression                   = $barman::settings::compression,
-  $custom_compression_filter     = $barman::settings::custom_compression_filter,
-  $custom_decompression_filter   = $barman::settings::custom_decompression_filter,
-  $exported_ipaddress            = "${::ipaddress}/32",
-  $home                          = $barman::settings::home,
-  $home_mode                     = $barman::settings::home_mode,
-  $host_group                    = $barman::settings::host_group,
-  $immediate_checkpoint          = $barman::settings::immediate_checkpoint,
-  $last_backup_maximum_age       = $barman::settings::last_backup_maximum_age,
-  $logfile                       = $barman::settings::logfile,
-  $log_level                     = $barman::settings::log_level,
-  $manage_package_repo           = $barman::settings::manage_package_repo,
-  $manage_ssh_host_keys          = $barman::settings::manage_ssh_host_keys,
-  $minimum_redundancy            = $barman::settings::minimum_redundancy,
-  $network_compression           = $barman::settings::network_compression,
-  $parallel_jobs                 = $barman::settings::parallel_jobs,
-  $path_prefix                   = $barman::settings::path_prefix,
-  $post_archive_retry_script     = $barman::settings::post_archive_retry_script,
-  $post_archive_script           = $barman::settings::post_archive_script,
-  $post_backup_retry_script      = $barman::settings::post_backup_retry_script,
-  $post_backup_script            = $barman::settings::post_backup_script,
-  $pre_archive_retry_script      = $barman::settings::pre_archive_retry_script,
-  $pre_archive_script            = $barman::settings::pre_archive_script,
-  $pre_backup_retry_script       = $barman::settings::pre_backup_retry_script,
-  $pre_backup_script             = $barman::settings::pre_backup_script,
-  $purge_unknown_conf            = $barman::settings::purge_unknown_conf,
-  $recovery_options              = $barman::settings::recovery_options,
-  $retention_policy              = $barman::settings::retention_policy,
-  $retention_policy_mode         = $barman::settings::retention_policy_mode,
-  $reuse_backup                  = $barman::settings::reuse_backup,
-  $slot_name                     = $barman::settings::slot_name,
-  $streaming_archiver            = $barman::settings::streaming_archiver,
-  $streaming_archiver_batch_size = $barman::settings::streaming_archiver_batch_size,
-  $streaming_archiver_name       = $barman::settings::streaming_archiver_name,
-  $streaming_backup_name         = $barman::settings::streaming_backup_name,
-  $tablespace_bandwidth_limit    = $barman::settings::tablespace_bandwidth_limit,
-  $wal_retention_policy          = $barman::settings::wal_retention_policy,
-  $custom_lines                  = $barman::settings::custom_lines,
-  $archive_cmd_type              = $barman::settings::archive_cmd_type,
-  $servers                       = undef,
-) inherits barman::settings {
-
+  String                             $user,
+  String                             $group,
+  String                             $ensure,
+  String                             $conf_file_path                = $barman::conf_file_path,
+  String                             $conf_template                 = 'barman/barman.conf.erb',
+  String                             $logrotate_template            = 'barman/logrotate.conf.erb',
+  String                             $barman_fqdn                   = $facts['networking']['fqdn'],
+  Boolean                            $archiver,
+  Optional[Integer]                  $archiver_batch_size           = undef,
+  Boolean                            $autoconfigure,
+  Barman::BackupMethod               $backup_method                 = undef,
+  Barman::BackupOptions              $backup_options                = undef,
+  Optional[Integer]                  $bandwidth_limit               = undef,
+  Optional[Integer]                  $basebackup_retry_sleep        = undef,
+  Optional[Integer]                  $basebackup_retry_times        = undef,
+  Optional[Integer]                  $check_timeout                 = undef,
+  Variant[String,Boolean]            $compression,
+  Optional[String]                   $custom_compression_filter     = undef,
+  Optional[String]                   $custom_decompression_filter   = undef,
+  Stdlib::IP::Address                $exported_ipaddress            = "${::ipaddress}/32",
+  Stdlib::Absolutepath               $home,
+  String                             $home_mode,
+  String                             $host_group,
+  Boolean                            $immediate_checkpoint,
+  Barman::BackupAge                  $last_backup_maximum_age        = undef,
+  Stdlib::Absolutepath               $logfile,
+  Barman::LogLevel                   $log_level,
+  Boolean                            $manage_package_repo,
+  Boolean                            $manage_ssh_host_keys,
+  Integer                            $minimum_redundancy,
+  Optional[Boolean]                  $network_compression            = undef,
+  Optional[Integer]                  $parallel_jobs                  = undef,
+  Optional[Stdlib::Absolutepath]     $path_prefix                    = undef,
+  Optional[String]                   $post_archive_retry_script      = undef,
+  Optional[String]                   $post_archive_script            = undef,
+  Optional[String]                   $post_backup_retry_script       = undef,
+  Optional[String]                   $post_backup_script             = undef,
+  Optional[String]                   $pre_archive_retry_script       = undef,
+  Optional[String]                   $pre_archive_script             = undef,
+  Optional[String]                   $pre_backup_retry_script        = undef,
+  Optional[String]                   $pre_backup_script              = undef,
+  Boolean                            $purge_unknown_conf,
+  Barman::RecoveryOptions            $recovery_options               = undef,
+  Barman::RetentionPolicy            $retention_policy               = undef,
+  Barman::RetentionPolicyMode        $retention_policy_mode          = undef,
+  Barman::ReuseBackup                $reuse_backup                   = undef,
+  Optional[String]                   $slot_name                      = undef,
+  Boolean                            $streaming_archiver,
+  Optional[Integer]                  $streaming_archiver_batch_size  = undef,
+  Optional[String]                   $streaming_archiver_name        = undef,
+  Optional[String]                   $streaming_backup_name          = undef,
+  Optional[String]                   $tablespace_bandwidth_limit     = undef,
+  Barman::WalRetention               $wal_retention_policy           = undef,
+  Optional[String]                   $custom_lines                   = undef,
+  String                             $archive_cmd_type,
+  Optional[Hash]                     $servers                        = undef,
+) {
   # when hash data is in servers, then fire-off barman::server define with that hash data
   if ($servers) {
-    validate_hash($servers)
     create_resources('barman::server',
       deep_merge(hiera_hash('barman::servers', {}), $servers))
-  }
-
-  # Check if autoconfigure is a boolean
-  validate_bool($autoconfigure)
-
-  # Check if minimum_redundancy is a number
-  validate_re($minimum_redundancy, [ '^[0-9]+$' ])
-
-  # Check if backup_options has correct values
-  validate_re($backup_options, [ '^exclusive_backup$', '^concurrent_backup$'], 'Invalid backup option please use exclusive_backup or concurrent_backup')
-
-  if($recovery_options) {
-    # Check if recovery has correct values, if specified
-    validate_re($recovery_options, [ '^get-wal$' ], 'Invalid recovery option. Please use "get-wal" or undef.')
-  }
-
-  # Check if immediate checkpoint is a boolean
-  validate_bool($immediate_checkpoint)
-
-  # Check to make sure basebackup_retry_times is a numerical value
-  if $basebackup_retry_times != false {
-    validate_re($basebackup_retry_times, [ '^[0-9]+$' ])
-  }
-  # Check to make sure basebackup_retry_sleep is a numerical value
-  if $basebackup_retry_sleep != false {
-    validate_re($basebackup_retry_sleep, [ '^[0-9]+$' ])
-  }
-
-  # Check to make sure last_backup_maximum_age identifies (DAYS | WEEKS | MONTHS) greater then 0
-  if $last_backup_maximum_age != false {
-    validate_re($last_backup_maximum_age, [ '^[1-9][0-9]* (DAY|WEEK|MONTH)S?$' ])
-  }
-
-  # Check to make sure retention_policy has correct value
-  validate_re($retention_policy, [ '^(^$|REDUNDANCY [1-9][0-9]*|RECOVERY WINDOW OF [1-9][0-9]* (DAY|WEEK|MONTH)S?)$' ])
-
-  # Check to make sure retention_policy_mode is set to auto
-  validate_re($retention_policy_mode, [ '^auto$' ])
-
-  # Check to make sure wal_retention_policy is set to main
-  validate_re($wal_retention_policy, [ '^main$' ])
-
-  validate_bool($archiver)
-
-  if $archiver_batch_size != undef {
-    validate_integer($archiver_batch_size)
-  }
-
-  if $backup_method != undef {
-    validate_re($backup_method, '^(rsync|postgres)$')
-  }
-
-  if $bandwidth_limit != undef {
-    validate_integer($bandwidth_limit)
-  }
-
-  if $check_timeout != undef {
-    validate_integer($check_timeout)
-  }
-
-  if $custom_compression_filter != undef {
-    validate_string($custom_compression_filter)
-  }
-
-  if $custom_decompression_filter != undef {
-    validate_string($custom_decompression_filter)
-  }
-
-  if $network_compression != undef {
-    validate_bool($network_compression)
-  }
-
-  if $parallel_jobs != undef {
-    validate_integer($parallel_jobs)
-  }
-
-  if $path_prefix != undef {
-    validate_absolute_path($path_prefix)
-  }
-
-  if $slot_name != undef {
-    validate_string($slot_name)
-  }
-
-  validate_bool($streaming_archiver)
-
-  if $streaming_archiver_batch_size != undef {
-    validate_integer($streaming_archiver_batch_size)
-  }
-
-  if $streaming_archiver_name != undef {
-    validate_string($streaming_archiver_name)
-  }
-
-  if $streaming_backup_name != undef {
-    validate_string($streaming_backup_name)
-  }
-
-  if $tablespace_bandwidth_limit != undef {
-    validate_string($tablespace_bandwidth_limit)
-  }
-
-  # Check to make sure reuse_backup has correct value
-  if $reuse_backup != false {
-    validate_re($reuse_backup, [ '^(off|link|copy)$' ])
   }
 
   # Ensure creation (or removal) of Barman files and directories

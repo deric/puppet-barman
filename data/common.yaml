@@ -1,1 +1,26 @@
---- {}
+---
+barman::user: barman
+barman::group: barman
+barman::dbuser: barman
+barman::dbname: postgres
+barman::home: /var/lib/barman
+barman::ensure: present
+barman::home_mode: '0750'
+barman::archiver: true
+barman::backup_options: exclusive_backup
+barman::conf_file_path: /etc/barman/barman.conf
+barman::compression: gzip
+barman::immediate_checkpoint: false
+barman::log_level: INFO
+barman::logfile: /var/log/barman/barman.log
+barman::minimum_redundancy: 0
+barman::retention_policy_mode: 'auto'
+barman::streaming_archiver: false
+barman::wal_retention_policy: 'main'
+barman::autoconfigure: false
+barman::host_group: 'global'
+barman::manage_package_repo: false
+barman::manage_ssh_host_keys: false
+barman::purge_unknown_conf: false
+barman::hba_entry_order: 50
+barman::archive_cmd_type: 'rsync'
