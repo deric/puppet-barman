@@ -227,6 +227,7 @@ class barman (
   $user                          = $::barman::settings::user,
   $group                         = $::barman::settings::group,
   $ensure                        = 'present',
+  $conf_file_path                = $::barman::settings::conf_file_path,
   $conf_template                 = 'barman/barman.conf.erb',
   $logrotate_template            = 'barman/logrotate.conf.erb',
   $barman_fqdn                   = $::fqdn,
@@ -427,23 +428,33 @@ class barman (
     require => Package['barman'],
   }
 
-  file { '/etc/barman':
-    ensure  => $ensure_directory,
-    purge   => $purge_unknown_conf,
-    recurse => true,
-    owner   => $user,
-    group   => $group,
-    mode    => '0750',
-    require => Package['barman'],
-  }
+  if $conf_file_path == '/etc/barman/barman.conf' {
+    file { '/etc/barman':
+      ensure  => $ensure_directory,
+      purge   => $purge_unknown_conf,
+      recurse => true,
+      owner   => $user,
+      group   => $group,
+      mode    => '0750',
+      require => Package['barman'],
+    }
 
-  file { '/etc/barman/barman.conf':
-    ensure  => $ensure_file,
-    owner   => $user,
-    group   => $group,
-    mode    => '0640',
-    content => template($conf_template),
-    require => File['/etc/barman'],
+    file { $conf_file_path:
+      ensure  => $ensure_file,
+      owner   => $user,
+      group   => $group,
+      mode    => '0640',
+      content => template($conf_template),
+      require => File['/etc/barman'],
+    }
+  } else {
+    file { $conf_file_path:
+      ensure  => $ensure_file,
+      owner   => $user,
+      group   => $group,
+      mode    => '0640',
+      content => template($conf_template),
+    }
   }
 
   file { $home:
