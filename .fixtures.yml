@@ -4,7 +4,7 @@ fixtures:
     cron_core: puppetlabs/cron_core
     postgresql:
       repo: puppetlabs/postgresql
-      ref: 8.3.0
+      ref: 7.5.0
     sshkeys_core: puppetlabs/sshkeys_core
     stdlib: puppetlabs/stdlib
     yumrepo_core: puppetlabs/yumrepo_core
