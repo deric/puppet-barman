@@ -356,7 +356,7 @@ class barman (
     owner   => $user,
     group   => $group,
     mode    => $home_mode,
-    require => Package['barman']
+    require => Package['barman'],
   }
 
   if $manage_ssh_host_keys {
@@ -380,7 +380,7 @@ class barman (
   exec { 'barman-check-all':
     command     => '/usr/bin/barman check all',
     subscribe   => File[$home],
-    refreshonly => true
+    refreshonly => true,
   }
 
   file { '/etc/logrotate.d/barman':
@@ -389,7 +389,7 @@ class barman (
     group   => $group,
     mode    => '0644',
     content => template($logrotate_template),
-    require => Package['barman']
+    require => Package['barman'],
   }
 
   # Set the autoconfiguration

@@ -240,7 +240,7 @@ class barman::postgres (
   Optional[Integer]              $backup_wday                   = undef,
   Integer                        $backup_hour                   = 4,
   Integer                        $backup_minute                 = 0,
-  Optional[String]               $password                      = '',
+  Barman::Password               $password                      = undef,
   String                         $server_address                = $facts['networking']['fqdn'],
   Integer                        $server_port                   = 5432,
   String                         $postgres_server_id            = $facts['networking']['hostname'],
@@ -300,12 +300,12 @@ class barman::postgres (
 
   # Generate a new password if not defined
   $real_password = $password ? {
-    ''      => fqdn_rand_string(30,'','fwsfbsfw'),
+    undef   => fqdn_rand_string(30,'','fwsfbsfw'),
     default => $password,
   }
 
   $archive_mode = $archiver ? {
-    true  => 'on',
+    true    => 'on',
     default => 'off',
   }
 

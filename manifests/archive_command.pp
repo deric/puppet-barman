@@ -9,6 +9,8 @@
 #   should be fine, so you don't need to change this.
 # @param barman_user
 #   The default value is the one contained in the 'settings' class.
+# @param barman_home
+#   Home directory
 # @param barman_server
 #   The value is set when the resource is created
 #   (in the 'autoconfigure' class).
