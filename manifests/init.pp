@@ -281,7 +281,6 @@ class barman (
   String                             $archive_cmd_type,
   Optional[Hash]                     $servers                        = undef,
 ) {
-
   # when hash data is in servers, then fire-off barman::server define with that hash data
   if ($servers) {
     create_resources('barman::server',
