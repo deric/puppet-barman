@@ -9,6 +9,10 @@
   "issues_url": "https://github.com/deric/puppet-barman/issues",
   "dependencies": [
     {
+      "name": "puppetlabs/apt",
+      "version_requirement": ">= 4.5.1 < 8.0.0"
+    },
+    {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 4.13.1 < 8.0.0"
     },
