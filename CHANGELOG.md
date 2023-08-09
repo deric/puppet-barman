@@ -1,3 +1,12 @@
+## 2023-08-09 - Release 4.0.0
+
+- Puppet 8 support
+- Puppet types validation
+- Compatible with `puppetlabs/stdlib` 8
+- Removed `barman::settings` class
+- [Full changes](https://github.com/deric/puppet-barman/compare/v3.0.0...v4.0.0)
+
+
 ## 2021-08-09 - Release 3.0.0
 
 - BC: Changed ssh key name from `barman` to `postgres-${fqdn}` in order to support multiple barman servers

@@ -227,26 +227,28 @@ class barman (
   String                             $user,
   String                             $group,
   String                             $ensure,
+  Boolean                            $archiver,
+  Boolean                            $autoconfigure,
+  Variant[String,Boolean]            $compression,
+  String                             $dbuser,
   String                             $conf_file_path                = $barman::conf_file_path,
   String                             $conf_template                 = 'barman/barman.conf.erb',
   String                             $logrotate_template            = 'barman/logrotate.conf.erb',
   String                             $barman_fqdn                   = $facts['networking']['fqdn'],
-  Boolean                            $archiver,
   Optional[Integer]                  $archiver_batch_size           = undef,
-  Boolean                            $autoconfigure,
   Barman::BackupMethod               $backup_method                 = undef,
   Barman::BackupOptions              $backup_options                = undef,
   Optional[Integer]                  $bandwidth_limit               = undef,
   Optional[Integer]                  $basebackup_retry_sleep        = undef,
   Optional[Integer]                  $basebackup_retry_times        = undef,
   Optional[Integer]                  $check_timeout                 = undef,
-  Variant[String,Boolean]            $compression,
   Optional[String]                   $custom_compression_filter     = undef,
   Optional[String]                   $custom_decompression_filter   = undef,
-  Stdlib::IP::Address                $exported_ipaddress            = "${::ipaddress}/32",
+  Stdlib::IP::Address                $exported_ipaddress            = "${facts['networking']['ip']}/32",
   Stdlib::Absolutepath               $home,
   String                             $home_mode,
   String                             $host_group,
+  String                             $dbname,
   Boolean                            $immediate_checkpoint,
   Barman::BackupAge                  $last_backup_maximum_age        = undef,
   Stdlib::Absolutepath               $logfile,
@@ -283,8 +285,7 @@ class barman (
 ) {
   # when hash data is in servers, then fire-off barman::server define with that hash data
   if ($servers) {
-    create_resources('barman::server',
-      deep_merge(hiera_hash('barman::servers', {}), $servers))
+    create_resources('barman::server', deep_merge(hiera_hash('barman::servers', {}), $servers))
   }
 
   # Ensure creation (or removal) of Barman files and directories
@@ -368,7 +369,7 @@ class barman (
     }
 
     file { "${home}/.ssh/known_hosts":
-      ensure => present,
+      ensure => file,
       owner  => $user,
       group  => $group,
       mode   => '0600',
@@ -393,7 +394,7 @@ class barman (
 
   # Set the autoconfiguration
   if $autoconfigure {
-    class { '::barman::autoconfigure':
+    class { 'barman::autoconfigure':
       exported_ipaddress => $exported_ipaddress,
       host_group         => $host_group,
       archive_cmd_type   => $archive_cmd_type,

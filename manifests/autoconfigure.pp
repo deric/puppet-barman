@@ -46,7 +46,7 @@ class barman::autoconfigure (
   String              $archive_cmd_type   = 'rsync',
 ) {
   # create the (empty) .pgpass file
-  file { "${::barman::home}/.pgpass":
+  file { "${barman::home}/.pgpass":
     ensure  => 'file',
     owner   => $barman::user,
     group   => $barman::group,
@@ -103,7 +103,7 @@ class barman::autoconfigure (
   # generated using Facter function
   if ($barman_key != undef and $barman_key != '') {
     $barman_key_splitted = split($barman_key, ' ')
-    @@ssh_authorized_key { "postgres-${::barman::barman_fqdn}":
+    @@ssh_authorized_key { "postgres-${barman::barman_fqdn}":
       ensure => present,
       user   => 'postgres',
       type   => $barman_key_splitted[0],

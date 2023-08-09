@@ -2,9 +2,12 @@ fixtures:
   forge_modules:
     apt: puppetlabs/apt
     cron_core: puppetlabs/cron_core
+    concat: puppetlabs/concat
     postgresql:
       repo: puppetlabs/postgresql
       ref: 7.5.0
     sshkeys_core: puppetlabs/sshkeys_core
-    stdlib: puppetlabs/stdlib
+    stdlib:
+      repo: puppetlabs/stdlib
+      ref: 8.6.0
     yumrepo_core: puppetlabs/yumrepo_core

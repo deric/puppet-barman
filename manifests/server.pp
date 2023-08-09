@@ -198,7 +198,7 @@ define barman::server (
   Boolean                        $active                        = true,
   Enum['present', 'absent']      $ensure                        = 'present',
   String                         $conf_template                 = 'barman/server.conf.erb',
-  Pattern[/^[\w]*$/]             $description                   = $name,
+  Barman::ServerName             $description                   = $name,
   Boolean                        $archiver                      = $barman::archiver,
   Optional[Integer]              $archiver_batch_size           = $barman::archiver_batch_size,
   Optional[Stdlib::Absolutepath] $backup_directory              = undef,
