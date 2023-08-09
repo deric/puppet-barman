@@ -24,7 +24,7 @@ describe 'barman::postgres' do
         description: 'psql',
       }
     end
-    it { is_expected.to compile.with_all_deps }
 
+    it { is_expected.to compile.with_all_deps }
   end
 end
