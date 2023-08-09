@@ -228,12 +228,12 @@
 class barman::postgres (
   $manage_barman_server          = true,
   $manage_dbuser                 = true,
-  $host_group                    = $barman::settings::host_group,
+  $host_group                    = $barman::host_group,
   $wal_level                     = 'archive',
-  $barman_user                   = $barman::settings::user,
-  $barman_dbuser                 = $barman::settings::dbuser,
-  $barman_dbname                 = $barman::settings::dbname,
-  $barman_home                   = $barman::settings::home,
+  $barman_user                   = $barman::user,
+  $barman_dbuser                 = $barman::dbuser,
+  $barman_dbname                 = $barman::dbname,
+  $barman_home                   = $barman::home,
   $manage_cron                   = true,
   $cron_user                     = 'root',
   $backup_mday                   = undef,
@@ -278,7 +278,7 @@ class barman::postgres (
   $pre_archive_script            = $barman::pre_archive_script,
   $pre_backup_retry_script       = $barman::pre_backup_retry_script,
   $pre_backup_script             = $barman::pre_backup_script,
-  $recovery_options              = $barman::settings::recovery_options,
+  $recovery_options              = $barman::recovery_options,
   $retention_policy              = $barman::retention_policy,
   $retention_policy_mode         = $barman::retention_policy_mode,
   $reuse_backup                  = $barman::reuse_backup,
@@ -293,7 +293,7 @@ class barman::postgres (
   $wal_retention_policy          = $barman::wal_retention_policy,
   $wals_directory                = undef,
   $custom_lines                  = $barman::custom_lines,
-) inherits barman::settings {
+) {
   if !defined(Class['postgresql::server']) {
     fail('barman::server requires the postgresql::server module installed and configured')
   }

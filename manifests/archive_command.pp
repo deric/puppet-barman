@@ -40,9 +40,9 @@
 #
 define barman::archive_command (
   String $postgres_server_id  = 'default',
-  String $barman_user         = $barman::settings::user,
+  String $barman_user         = $barman::user,
   String $barman_server       = $title,
-  String $barman_home         = $barman::settings::home,
+  String $barman_home         = $barman::home,
   String $barman_incoming_dir = undef,
   String $archive_cmd_type    = 'rsync',
 ) {

@@ -11,3 +11,4 @@ fixtures:
     stdlib:
       repo: puppetlabs/stdlib
       ref: 7.1.0
+    yumrepo_core: puppetlabs/yumrepo_core

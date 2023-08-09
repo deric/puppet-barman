@@ -3,18 +3,10 @@
 require 'spec_helper'
 
 describe 'barman' do
-  let(:facts) do
-    {
-      os: {
-        family: 'Debian',
-        name: 'Debian',
-        distro: { codename: 'stretch' },
-        release: { major: '9', full: '9.11' }
-      },
-      ipaddress: '10.0.0.1',
-    }
-  end
+    _, os_facts = on_supported_os.first
+  let(:facts) { os_facts }
 
+  it { is_expected.to compile.with_all_deps }
   # Installs barman
   it { is_expected.to contain_package('barman').with_tag('postgresql') }
 

@@ -41,15 +41,15 @@
 # Copyright 2012-2017 2ndQuadrant Italia
 #
 class barman::autoconfigure (
-  String              $host_group         = $barman::settings::host_group,
+  String              $host_group         = $barman::host_group,
   Stdlib::IP::Address $exported_ipaddress = "${facts['networking']['ip']}/32",
   String              $archive_cmd_type   = 'rsync',
 ) {
   # create the (empty) .pgpass file
-  file { "${::barman::settings::home}/.pgpass":
+  file { "${::barman::home}/.pgpass":
     ensure  => 'file',
-    owner   => $barman::settings::user,
-    group   => $barman::settings::group,
+    owner   => $barman::user,
+    group   => $barman::group,
     mode    => '0600',
     require => Class['barman'],
   }
