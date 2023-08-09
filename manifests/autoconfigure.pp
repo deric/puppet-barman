@@ -15,12 +15,15 @@
 #
 # === Parameters
 #
-# [*host_group*] - Tag the different host groups for the backup
-#                  (default value is set from the 'settings' class).
-# [*exported_ipaddress*] - The barman server address to allow in the PostgreSQL
-#                          server ph_hba.conf. Defaults to "${::ipaddress}/32".
-# [*archive_cmd_type*] - The archive command to use - either rsync (default) or
-#                        barman-wal-archive
+# @param host_group
+#   Tag the different host groups for the backup
+#   (default value is set from the 'settings' class).
+# @param exported_ipaddress
+#   The barman server address to allow in the PostgreSQL
+#   server ph_hba.conf. Defaults to "${::ipaddress}/32".
+# @param archive_cmd_type
+#   The archive command to use - either rsync (default) or
+#   barman-wal-archive
 #
 # === Authors
 #
@@ -38,11 +41,10 @@
 # Copyright 2012-2017 2ndQuadrant Italia
 #
 class barman::autoconfigure (
-  $host_group         = $barman::settings::host_group,
-  $exported_ipaddress = "${::ipaddress}/32",
-  $archive_cmd_type   = 'rsync',
+  String              $host_group         = $barman::settings::host_group,
+  Stdlib::IP::Address $exported_ipaddress = "${facts['networking']['ip']}/32",
+  String              $archive_cmd_type   = 'rsync',
 ) {
-
   # create the (empty) .pgpass file
   file { "${::barman::settings::home}/.pgpass":
     ensure  => 'file',
@@ -87,10 +89,10 @@ class barman::autoconfigure (
   }
 
   if $barman::manage_ssh_host_keys {
-    @@sshkey { "barman-${::fqdn}":
+    @@sshkey { "barman-${facts['networking']['fqdn']}":
       ensure       => present,
-      host_aliases => [$::hostname, $::fqdn, $::ipaddress],
-      key          => $::sshecdsakey,
+      host_aliases => [$facts['networking']['hostname'], $facts['networking']['fqdn'], $facts['networking']['ip']],
+      key          => $facts['ssh']['ecdsa']['key'],
       type         => 'ecdsa-sha2-nistp256',
       target       => '/var/lib/postgresql/.ssh/known_hosts',
       tag          => "barman-${host_group}",
@@ -109,5 +111,4 @@ class barman::autoconfigure (
       tag    => "barman-${host_group}",
     }
   }
-
 }

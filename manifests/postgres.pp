@@ -241,9 +241,9 @@ class barman::postgres (
   $backup_hour                   = 4,
   $backup_minute                 = 0,
   $password                      = '',
-  $server_address                = $::fqdn,
+  $server_address                = $facts['networking']['fqdn'],
   $server_port                   = 5432,
-  $postgres_server_id            = $::hostname,
+  $postgres_server_id            = $facts['networking']['hostname'],
   $postgres_user                 = 'postgres',
   $ensure                        = 'present',
   $conf_template                 = 'barman/server.conf.erb',
@@ -293,8 +293,7 @@ class barman::postgres (
   $wal_retention_policy          = $barman::wal_retention_policy,
   $wals_directory                = undef,
   $custom_lines                  = $barman::custom_lines,
-) inherits ::barman::settings {
-
+) inherits barman::settings {
   if !defined(Class['postgresql::server']) {
     fail('barman::server requires the postgresql::server module installed and configured')
   }
@@ -415,8 +414,8 @@ class barman::postgres (
   if $manage_ssh_host_keys {
     @@sshkey { "postgres-${postgres_server_id}":
       ensure       => present,
-      host_aliases => [$::hostname, $::fqdn, $::ipaddress, $server_address],
-      key          => $::sshecdsakey,
+      host_aliases => [$facts['networking']['hostname'], $facts['networking']['fqdn'], $facts['networking']['ip'], $server_address],
+      key          => $facts['ssh']['ecdsa']['key'],
       type         => 'ecdsa-sha2-nistp256',
       target       => "${barman_home}/.ssh/known_hosts",
       tag          => "barman-${host_group}-postgresql",
@@ -440,6 +439,5 @@ class barman::postgres (
     Barman::Archive_command <<| tag == "barman-${host_group}" |>> {
       postgres_server_id => $postgres_server_id,
     }
-
   }
 }

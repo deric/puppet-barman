@@ -95,6 +95,4 @@ class barman::settings (
   $purge_unknown_conf            = false,
   $hba_entry_order               = 50,
   $archive_cmd_type              = 'rsync',
-) {
-
-}
+) {}

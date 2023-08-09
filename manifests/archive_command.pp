@@ -4,15 +4,20 @@
 #
 # === Parameters
 #
-# [*postgres_server_id*] - Tag for the PostgreSQL server. The default value (the host name)
-#                          should be fine, so you don't need to change this.
-# [*barman_user*] - The default value is the one contained in the 'settings' class.
-# [*barman_server*] - The value is set when the resource is created
-#                     (in the 'autoconfigure' class).
-# [*barman_incoming_dir*] - The Barman WAL incoming directory. The default value will be
-#                           generated here to be something like
+# @param postgres_server_id
+#   Tag for the PostgreSQL server. The default value (the host name)
+#   should be fine, so you don't need to change this.
+# @param barman_user
+#   The default value is the one contained in the 'settings' class.
+# @param barman_server
+#   The value is set when the resource is created
+#   (in the 'autoconfigure' class).
+# @param barman_incoming_dir
+#   The Barman WAL incoming directory. The default value will be
+#   generated here to be something like
 #                           '<barman home>/<postgres_server_id>/incoming'
-# [*archive_cmd_type*] - The archive command to use, either rsync or barman-wal-archive,
+# @param archive_cmd_type
+#   The archive command to use, either rsync or barman-wal-archive,
 #                        defaults to rsync
 #
 # All parameters that are supported can be changed when the resource 'archive' is
@@ -34,14 +39,13 @@
 # Copyright 2012-2017 2ndQuadrant Italia
 #
 define barman::archive_command (
-  $postgres_server_id  = 'default',
-  $barman_user         = $barman::settings::user,
-  $barman_server       = $title,
-  $barman_home         = $barman::settings::home,
-  $barman_incoming_dir = '',
-  $archive_cmd_type    = 'rsync',
+  String $postgres_server_id  = 'default',
+  String $barman_user         = $barman::settings::user,
+  String $barman_server       = $title,
+  String $barman_home         = $barman::settings::home,
+  String $barman_incoming_dir = undef,
+  String $archive_cmd_type    = 'rsync',
 ) {
-
   # Ensure that 'postgres' class correctly configure the 'archive_command'
   if $postgres_server_id == 'default'
   and $barman_incoming_dir == '' {
