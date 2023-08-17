@@ -1,1 +1,1 @@
-type Barman::ServerName = Pattern[/^[\w]*$/]
+type Barman::ServerName = Pattern[/^[\w-]*$/]
