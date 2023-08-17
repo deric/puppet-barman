@@ -135,6 +135,7 @@ describe 'barman' do
   context 'with different parameters' do
     let(:params) do
       {
+        barman_lock_directory: '/var/run/barman',
         compression: false,
         pre_backup_script: '/bin/false',
         post_backup_script: '/bin/false',
@@ -142,6 +143,7 @@ describe 'barman' do
       }
     end
 
+    it { is_expected.to contain_file('/etc/barman/barman.conf').with_content(%r{barman_lock_directory = /var/run/barman}) }
     it { is_expected.not_to contain_file('/etc/barman/barman.conf').with_content(%r{compression}) }
     it { is_expected.to contain_file('/etc/barman/barman.conf').with_content(%r{pre_backup_script = /bin/false}) }
     it { is_expected.to contain_file('/etc/barman/barman.conf').with_content(%r{post_backup_script = /bin/false}) }

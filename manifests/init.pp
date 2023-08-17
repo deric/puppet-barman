@@ -38,6 +38,7 @@
 # [*bandwidth_limit*] - This option allows you to specify a maximum transfer rate
 #                       in kilobytes per second. A value of zero specifies no
 #                       limit (default).
+# [*barman_lock_directory*] - Global option for a directory for lock files.
 # [*check_timeout*] - Maximum execution time, in seconds per server, for a barman
 #                     check command. Set to 0 to disable the timeout. Positive
 #                     integer, default 30.
@@ -239,6 +240,7 @@ class barman (
   Barman::BackupMethod               $backup_method                 = undef,
   Barman::BackupOptions              $backup_options                = undef,
   Optional[Integer]                  $bandwidth_limit               = undef,
+  Optional[String]                   $barman_lock_directory         = undef,
   Optional[Integer]                  $basebackup_retry_sleep        = undef,
   Optional[Integer]                  $basebackup_retry_times        = undef,
   Optional[Integer]                  $check_timeout                 = undef,
