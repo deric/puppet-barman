@@ -21,6 +21,9 @@ recovery_options = <%= @recovery_options %>
 <%- if @bandwidth_limit -%>
 bandwidth_limit = <%= @bandwidth_limit %>
 <%- end -%>
+<%- if @barman_lock_directory -%>
+barman_lock_directory = <%= @barman_lock_directory %>
+<%- end -%>
 <%- if @check_timeout -%>
 check_timeout = <%= @check_timeout %>
 <%- end -%>
