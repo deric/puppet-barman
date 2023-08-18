@@ -33,16 +33,14 @@
     {
       "operatingsystem": "Debian",
       "operatingsystemrelease": [
-        "8",
-        "9",
         "10",
-        "11"
+        "11",
+        "12"
       ]
     },
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "18.04",
         "20.04",
         "22.04"
       ]
