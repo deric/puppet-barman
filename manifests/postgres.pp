@@ -247,7 +247,7 @@ class barman::postgres (
   String                         $postgres_user                 = 'postgres',
   String                         $ensure                        = 'present',
   String                         $conf_template                 = 'barman/server.conf.erb',
-  Barman::ServerName             $description                   = $name,
+  String                         $description                   = $name,
   Boolean                        $archiver                      = $barman::archiver,
   Optional[Integer]              $archiver_batch_size           = $barman::archiver_batch_size,
   Optional[Stdlib::Absolutepath] $backup_directory              = undef,

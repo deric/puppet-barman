@@ -12,6 +12,7 @@
 # [*conninfo*] - Postgres connection string. *Mandatory*.
 # [*ssh_command*] - Command to open an ssh connection to Postgres. *Mandatory*.
 # [*active*] - Whether this server is active in the barman configuration.
+# [*server_name*] - Name of the server
 # [*ensure*] - Ensure (or not) that single server Barman configuration files are
 #              created. The default value is 'present'. Just 'absent' or
 #              'present' are the possible settings.
@@ -195,10 +196,11 @@
 define barman::server (
   String                         $conninfo,
   String                         $ssh_command,
+  Barman::ServerName             $server_name                   = $title,
   Boolean                        $active                        = true,
   Enum['present', 'absent']      $ensure                        = 'present',
   String                         $conf_template                 = 'barman/server.conf.erb',
-  Barman::ServerName             $description                   = $name,
+  String                         $description                   = $title,
   Boolean                        $archiver                      = $barman::archiver,
   Optional[Integer]              $archiver_batch_size           = $barman::archiver_batch_size,
   Optional[Stdlib::Absolutepath] $backup_directory              = undef,

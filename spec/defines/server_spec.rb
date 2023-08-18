@@ -56,7 +56,21 @@ describe 'barman::server', type: :define do
   context 'with invalid name' do
     let(:title) { 'server!@#%' }
 
-    it { is_expected.to raise_error(Puppet::Error, %r{'description' expects a match}) }
+    it { is_expected.to raise_error(Puppet::PreformattedError, %r{match for Barman::ServerName}) }
+  end
+
+  context 'with valid name and description' do
+    let(:title) { 'foo-bar' }
+    let(:params) do
+      {
+        conninfo: 'user=user1 host=server1 db=db1 pass=pass1 port=5432',
+        ssh_command: 'ssh postgres@server1',
+        description: 'some description',
+        compression: 'bzip2',
+      }
+    end
+
+    it { is_expected.to contain_file('/etc/barman.d/foo-bar.conf').with_content(%r{compression = bzip2}) }
   end
 
   # Fails without conninfo and ssh_command
