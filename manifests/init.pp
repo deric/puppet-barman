@@ -284,6 +284,7 @@ class barman (
   Optional[String]                   $custom_lines                   = undef,
   String                             $archive_cmd_type,
   Optional[Hash]                     $servers                        = undef,
+  Integer                            $hba_entry_order,
 ) {
   # when hash data is in servers, then fire-off barman::server define with that hash data
   if ($servers) {
