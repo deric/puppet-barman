@@ -1,3 +1,24 @@
+## 2023-12-15 - Release 4.1.0
+
+**Bugfixes**
+-  Allow dashes Barman::ServerName type [#5](https://github.com/deric/puppet-barman/pull/5)
+-  `barman_incoming_dir` expects a String [#8](https://github.com/deric/puppet-barman/pull/8)
+- Add missing parameter `hba_entry_order` [#9](https://github.com/deric/puppet-barman/pull/9)
+
+**Changes**
+- Added acceptance tests [#7](https://github.com/deric/puppet-barman/pull/7)
+- Removed Debian 8 and Debian 9 support
+- Added Debian 11 and 12
+
+**Features**
+- Compatible with `puppetlabs/stdlib` 9
+- Compatible with `puppetlabs/postgresql` 10
+- Add `barman_lock_directory` [#6](https://github.com/deric/puppet-barman/pull/6)
+- Allow setting archive mode to always [#10](https://github.com/deric/puppet-barman/pull/10)
+
+- [Full changes](https://github.com/deric/puppet-barman/compare/v4.0.0...v4.1.0)
+
+
 ## 2023-08-09 - Release 4.0.0
 
 - Puppet 8 support
