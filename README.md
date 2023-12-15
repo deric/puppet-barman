@@ -12,7 +12,7 @@ PostgreSQL servers to be backed up.
 
 For further information on Barman:
 
-* [Module is a fork of [it2ndq-barman](https://github.com/2ndquadrant-it/puppet-barman)
+* Module is a fork of [it2ndq-barman](https://github.com/2ndquadrant-it/puppet-barman)
 * [Project homepage](http://www.pgbarman.org)
 * [Barman documentation](http://docs.pgbarman.org)
 
