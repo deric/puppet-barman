@@ -285,6 +285,7 @@ class barman (
   Barman::WalRetention               $wal_retention_policy           = undef,
   Optional[String]                   $custom_lines                   = undef,
   Optional[Hash]                     $servers                        = undef,
+  Optional[Stdlib::Absolutepath]     $streaming_wals_directory       = undef,
 ) {
   # when hash data is in servers, then fire-off barman::server define with that hash data
   if ($servers) {

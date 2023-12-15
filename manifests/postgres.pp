@@ -289,7 +289,7 @@ class barman::postgres (
   Optional[String]                      $streaming_archiver_name       = $barman::streaming_archiver_name,
   Optional[String]                      $streaming_backup_name         = $barman::streaming_backup_name,
   Optional[String]                      $streaming_conninfo            = undef,
-  Optional[String]                      $streaming_wals_directory      = undef,
+  Optional[Stdlib::Absolutepath]        $streaming_wals_directory      = $barman::streaming_wals_directory,
   Optional[String]                      $tablespace_bandwidth_limit    = $barman::tablespace_bandwidth_limit,
   Barman::WalRetention                  $wal_retention_policy          = $barman::wal_retention_policy,
   Optional[Stdlib::Absolutepath]        $wals_directory                = undef,
