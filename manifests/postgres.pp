@@ -431,8 +431,8 @@ class barman::postgres (
   if $archiver {
     # If barman archiver is enabled, export the ssh key of postgres user
     # into barman and set the archive command
-    if ($::postgres_key != undef and $::postgres_key != '') {
-      $postgres_key_split = split($::postgres_key, ' ')
+    if ($postgres_key != undef and $postgres_key != '') {
+      $postgres_key_split = split($postgres_key, ' ')
       @@ssh_authorized_key { "postgres-${postgres_server_id}":
         ensure => present,
         user   => $barman_user,
