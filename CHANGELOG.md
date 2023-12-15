@@ -9,6 +9,7 @@
 - Added acceptance tests [#7](https://github.com/deric/puppet-barman/pull/7)
 - Removed Debian 8 and Debian 9 support
 - Added Debian 11 and 12
+- `barman_incoming_dir` defaults to `undef` instead of an empty string
 
 **Features**
 - Compatible with `puppetlabs/stdlib` 9

@@ -1,6 +1,4 @@
-# == Class: archive_command
-#
-# Build the correct archive command which will be exported to the PostgreSQL server
+# @summary Build the correct archive command which will be exported to the PostgreSQL server
 #
 # === Parameters
 #
@@ -41,22 +39,22 @@
 # Copyright 2012-2017 2ndQuadrant Italia
 #
 define barman::archive_command (
-  String $postgres_server_id  = 'default',
-  String $barman_user         = $barman::user,
-  String $barman_server       = $title,
-  String $barman_home         = $barman::home,
-  String $barman_incoming_dir = '',
-  String $archive_cmd_type    = 'rsync',
+  String                     $postgres_server_id  = 'default',
+  String                     $barman_user         = $barman::user,
+  String                     $barman_server       = $title,
+  String                     $barman_home         = $barman::home,
+  String                     $archive_cmd_type    = 'rsync',
+  Optional[Stdlib::Unixpath] $barman_incoming_dir = undef,
 ) {
   # Ensure that 'postgres' class correctly configure the 'archive_command'
   if $postgres_server_id == 'default'
-  and $barman_incoming_dir == '' {
+  and !$barman_incoming_dir {
     fail 'You must pass either postgres_server_id or barman_incoming_dir'
   }
 
   # Generate path if not explicitely defined
   $real_barman_incoming_dir = $barman_incoming_dir ? {
-    ''      => "${barman_home}/${postgres_server_id}/incoming",
+    undef   => "${barman_home}/${postgres_server_id}/incoming",
     default => $barman_incoming_dir,
   }
 
