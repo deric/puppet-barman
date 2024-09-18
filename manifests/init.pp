@@ -353,7 +353,7 @@ class barman (
     ensure  => $ensure_directory,
     purge   => $purge_unknown_conf,
     recurse => true,
-    owner   => $user,
+    owner   => 'root',
     group   => $group,
     mode    => '0750',
     require => Package['barman'],
@@ -364,7 +364,7 @@ class barman (
       ensure  => $ensure_directory,
       purge   => $purge_unknown_conf,
       recurse => true,
-      owner   => $user,
+      owner   => 'root',
       group   => $group,
       mode    => '0750',
       require => Package['barman'],
@@ -372,7 +372,7 @@ class barman (
 
     file { $conf_file_path:
       ensure  => $ensure_file,
-      owner   => $user,
+      owner   => 'root',
       group   => $group,
       mode    => '0640',
       content => template($conf_template),
@@ -381,7 +381,7 @@ class barman (
   } else {
     file { $conf_file_path:
       ensure  => $ensure_file,
-      owner   => $user,
+      owner   => 'root',
       group   => $group,
       mode    => '0640',
       content => template($conf_template),
@@ -423,7 +423,7 @@ class barman (
   file { '/etc/logrotate.d/barman':
     ensure  => $ensure_file,
     owner   => 'root',
-    group   => $group,
+    group   => 0,
     mode    => '0644',
     content => template($logrotate_template),
     require => Package['barman'],
