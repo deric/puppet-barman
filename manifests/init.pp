@@ -65,8 +65,6 @@
 # @param archiver_batch_size
 #   Setting this option enables batch processing of WAL files.
 #   The default processes all currently available files.
-# @param backup_directory
-#   Directory where backup data for a server will be placed.
 # @param backup_method
 #   Configure the method barman used for backup execution. If set to rsync (default),
 #   barman will execute backup using the rsync command. If set to postgres barman will use the
@@ -87,6 +85,9 @@
 # @param compression
 #   Compression algorithm. Currently supports 'gzip' (default),
 #   'bzip2', and 'custom'. Disabled if false.
+# @param create_slot
+#  Determines whether Barman should automatically create a replication slot if it’s
+#  not already present for streaming WAL files. One of 'auto' or 'manual' (default).
 # @param custom_compression_filter
 #   Customised compression algorithm applied to WAL files.
 # @param custom_decompression_filter
@@ -207,10 +208,6 @@
 #                             pg_basebackup command. Only available with
 #                             pg_basebackup >= 9.3. By default it is set to
 #                             barman_streaming_backup.
-# @param streaming_conninfo
-# Connection string used by Barman to connect to the
-#                          Postgres server via streaming replication protocol. By
-#                          default it is set to the same value as *conninfo*.
 # @param streaming_wals_directory
 # Directory where WAL files are streamed from the
 #                                PostgreSQL server to Barman.
@@ -291,6 +288,7 @@ class barman (
   Optional[Integer]                  $basebackup_retry_sleep        = undef,
   Optional[Integer]                  $basebackup_retry_times        = undef,
   Optional[Integer]                  $check_timeout                 = undef,
+  Barman::CreateSlot                 $create_slot                   = undef,
   Optional[String]                   $custom_compression_filter     = undef,
   Optional[String]                   $custom_decompression_filter   = undef,
   Stdlib::IP::Address                $exported_ipaddress            = "${facts['networking']['ip']}/32",

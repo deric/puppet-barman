@@ -30,6 +30,9 @@ check_timeout = <%= @check_timeout %>
 <%- if @compression -%>
 compression = <%= @compression %>
 <%- end -%>
+<%- if @create_slot -%>
+create_slot = <%= @create_slot %>
+<%- end -%>
 <%- if @custom_compression_filter -%>
 custom_compression_filter = <%= @custom_compression_filter %>
 <%- end -%>
