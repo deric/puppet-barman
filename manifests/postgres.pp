@@ -28,9 +28,13 @@
 #
 # Copyright 2012-2017 2ndQuadrant Italia
 #
+# @param manage_barman_server
+#   Whether barman server config should be exported, default: `true`
 # @param host_group
 # Tag the different host groups for the backup
 #                  (default value is set from the 'settings' class).
+# @param manage_dbuser
+#   Whether db role should be managed, default: `true`
 # @param manage_ssh_host_keys
 # When using autoconfigure, ensure the hosts contain
 #                            each other ssh host key. Must also be set on 'barman'
@@ -41,6 +45,8 @@
 # @param barman_user
 # Definition of the 'barman' user used in Barman 'conninfo'.
 #                   The default value is set from the 'settings' class.
+# @param barman_dbname
+#  Name of the barman DB
 # @param barman_dbuser
 # Definition of the user used by Barman to connect to the
 #                     PostgreSQL database(s) in the 'conninfo'. The default
@@ -91,6 +97,8 @@
 #                   set when the resource is used.
 # @param archiver
 # Whether the log shipping backup mechanism is active or not.
+# @param force_archive_mode
+#  Configure archive mode regardless of archiver settings
 # @param archiver_batch_size
 # Setting this option enables batch processing of WAL
 #                           files. The default processes all currently available
@@ -161,7 +169,7 @@
 # @param network_compression
 # This option allows you to enable data compression for
 #                           network transfers. Defaults to false.
-# @param parallel_jobs] - Number of parallel workers used to copy files during
+# @param parallel_jobs - Number of parallel workers used to copy files during
 #                    backup or recovery. Requires backup mode = rsync.
 # @param path_prefix
 # One or more absolute paths, separated by colon, where Barman

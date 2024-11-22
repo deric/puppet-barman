@@ -45,6 +45,8 @@
 # @param dbuser
 #   Username used for connecting to the database
 # @param dbname
+# @param conf_file_path
+#   Absolute path to main `barman.conf` file
 # @param conf_template
 #   Path of the template of the barman.conf configuration
 #    file. The default value does not need to be changed.
@@ -55,6 +57,8 @@
 #   A different place for backups than the default. Will be symlinked
 #   to the default (/var/lib/barman). You should not change this
 #     value after the first setup.
+# @param home_mode
+#   Directory mode, default: `0750`
 # @param logfile
 #   A different log file. The default is '/var/log/barman/barman.log'
 # @param log_level
@@ -62,6 +66,10 @@
 #   (DEBUG, INFO, WARNING, ERROR, CRITICAL). Global.
 # @param archiver
 #   Whether the log shipping backup mechanism is active or not (defaults to true)
+# @param archive_cmd_type
+#   Default `rsync`
+# @param hba_entry_order
+#  Entry priority
 # @param archiver_batch_size
 #   Setting this option enables batch processing of WAL files.
 #   The default processes all currently available files.

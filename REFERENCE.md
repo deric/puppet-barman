@@ -20,6 +20,7 @@
 * [`Barman::BackupAge`](#Barman--BackupAge): Allowed backup age
 * [`Barman::BackupMethod`](#Barman--BackupMethod): Barman backup methods
 * [`Barman::BackupOptions`](#Barman--BackupOptions): Barman backup options
+* [`Barman::CreateSlot`](#Barman--CreateSlot): create_slow parrams
 * [`Barman::LogLevel`](#Barman--LogLevel): Allowed log levels
 * [`Barman::Password`](#Barman--Password): Allowed values for secrets
 * [`Barman::RecoveryOptions`](#Barman--RecoveryOptions): Recovery options, currently only `get-wal` supported
@@ -132,9 +133,6 @@ Identifier to be used as application_name by the
                             pg_basebackup command. Only available with
                             pg_basebackup >= 9.3. By default it is set to
                             barman_streaming_backup.
-Connection string used by Barman to connect to the
-                         Postgres server via streaming replication protocol. By
-                         default it is set to the same value as *conninfo*.
 Directory where WAL files are streamed from the
                                PostgreSQL server to Barman.
 This option allows you to specify a maximum
@@ -198,14 +196,17 @@ The following parameters are available in the `barman` class:
 * [`ensure`](#-barman--ensure)
 * [`dbuser`](#-barman--dbuser)
 * [`dbname`](#-barman--dbname)
+* [`conf_file_path`](#-barman--conf_file_path)
 * [`conf_template`](#-barman--conf_template)
 * [`logrotate_template`](#-barman--logrotate_template)
 * [`home`](#-barman--home)
+* [`home_mode`](#-barman--home_mode)
 * [`logfile`](#-barman--logfile)
 * [`log_level`](#-barman--log_level)
 * [`archiver`](#-barman--archiver)
+* [`archive_cmd_type`](#-barman--archive_cmd_type)
+* [`hba_entry_order`](#-barman--hba_entry_order)
 * [`archiver_batch_size`](#-barman--archiver_batch_size)
-* [`backup_directory`](#-barman--backup_directory)
 * [`backup_method`](#-barman--backup_method)
 * [`backup_options`](#-barman--backup_options)
 * [`recovery_options`](#-barman--recovery_options)
@@ -213,6 +214,7 @@ The following parameters are available in the `barman` class:
 * [`barman_lock_directory`](#-barman--barman_lock_directory)
 * [`check_timeout`](#-barman--check_timeout)
 * [`compression`](#-barman--compression)
+* [`create_slot`](#-barman--create_slot)
 * [`custom_compression_filter`](#-barman--custom_compression_filter)
 * [`custom_decompression_filter`](#-barman--custom_decompression_filter)
 * [`immediate_checkpoint`](#-barman--immediate_checkpoint)
@@ -240,7 +242,6 @@ The following parameters are available in the `barman` class:
 * [`streaming_archiver_batch_size`](#-barman--streaming_archiver_batch_size)
 * [`streaming_archiver_name`](#-barman--streaming_archiver_name)
 * [`streaming_backup_name`](#-barman--streaming_backup_name)
-* [`streaming_conninfo`](#-barman--streaming_conninfo)
 * [`streaming_wals_directory`](#-barman--streaming_wals_directory)
 * [`tablespace_bandwidth_limit`](#-barman--tablespace_bandwidth_limit)
 * [`custom_lines`](#-barman--custom_lines)
@@ -252,10 +253,6 @@ The following parameters are available in the `barman` class:
 * [`manage_ssh_host_keys`](#-barman--manage_ssh_host_keys)
 * [`purge_unknown_conf`](#-barman--purge_unknown_conf)
 * [`servers`](#-barman--servers)
-* [`home_mode`](#-barman--home_mode)
-* [`archive_cmd_type`](#-barman--archive_cmd_type)
-* [`hba_entry_order`](#-barman--hba_entry_order)
-* [`conf_file_path`](#-barman--conf_file_path)
 
 ##### <a name="-barman--user"></a>`user`
 
@@ -288,6 +285,14 @@ Data type: `String`
 
 
 
+##### <a name="-barman--conf_file_path"></a>`conf_file_path`
+
+Data type: `String`
+
+Absolute path to main `barman.conf` file
+
+Default value: `$barman::conf_file_path`
+
 ##### <a name="-barman--conf_template"></a>`conf_template`
 
 Data type: `String`
@@ -314,6 +319,12 @@ A different place for backups than the default. Will be symlinked
 to the default (/var/lib/barman). You should not change this
   value after the first setup.
 
+##### <a name="-barman--home_mode"></a>`home_mode`
+
+Data type: `String`
+
+Directory mode, default: `0750`
+
 ##### <a name="-barman--logfile"></a>`logfile`
 
 Data type: `Stdlib::Absolutepath`
@@ -333,6 +344,18 @@ Data type: `Boolean`
 
 Whether the log shipping backup mechanism is active or not (defaults to true)
 
+##### <a name="-barman--archive_cmd_type"></a>`archive_cmd_type`
+
+Data type: `String`
+
+Default `rsync`
+
+##### <a name="-barman--hba_entry_order"></a>`hba_entry_order`
+
+Data type: `Integer`
+
+Entry priority
+
 ##### <a name="-barman--archiver_batch_size"></a>`archiver_batch_size`
 
 Data type: `Optional[Integer]`
@@ -341,10 +364,6 @@ Setting this option enables batch processing of WAL files.
 The default processes all currently available files.
 
 Default value: `undef`
-
-##### <a name="-barman--backup_directory"></a>`backup_directory`
-
-Directory where backup data for a server will be placed.
 
 ##### <a name="-barman--backup_method"></a>`backup_method`
 
@@ -405,6 +424,15 @@ Data type: `Variant[String,Boolean]`
 
 Compression algorithm. Currently supports 'gzip' (default),
 'bzip2', and 'custom'. Disabled if false.
+
+##### <a name="-barman--create_slot"></a>`create_slot`
+
+Data type: `Barman::CreateSlot`
+
+Determines whether Barman should automatically create a replication slot if it’s
+not already present for streaming WAL files. One of 'auto' or 'manual' (default).
+
+Default value: `undef`
 
 ##### <a name="-barman--custom_compression_filter"></a>`custom_compression_filter`
 
@@ -618,10 +646,6 @@ Data type: `Optional[String]`
 
 Default value: `undef`
 
-##### <a name="-barman--streaming_conninfo"></a>`streaming_conninfo`
-
-
-
 ##### <a name="-barman--streaming_wals_directory"></a>`streaming_wals_directory`
 
 Data type: `Optional[Stdlib::Absolutepath]`
@@ -700,32 +724,6 @@ Data type: `Optional[Hash]`
 
 
 Default value: `undef`
-
-##### <a name="-barman--home_mode"></a>`home_mode`
-
-Data type: `String`
-
-
-
-##### <a name="-barman--archive_cmd_type"></a>`archive_cmd_type`
-
-Data type: `String`
-
-
-
-##### <a name="-barman--hba_entry_order"></a>`hba_entry_order`
-
-Data type: `Integer`
-
-
-
-##### <a name="-barman--conf_file_path"></a>`conf_file_path`
-
-Data type: `String`
-
-
-
-Default value: `$barman::conf_file_path`
 
 ### <a name="barman--autoconfigure"></a>`barman::autoconfigure`
 
@@ -1023,10 +1021,13 @@ class { postgres :
 
 The following parameters are available in the `barman::postgres` class:
 
+* [`manage_barman_server`](#-barman--postgres--manage_barman_server)
 * [`host_group`](#-barman--postgres--host_group)
+* [`manage_dbuser`](#-barman--postgres--manage_dbuser)
 * [`manage_ssh_host_keys`](#-barman--postgres--manage_ssh_host_keys)
 * [`wal_level`](#-barman--postgres--wal_level)
 * [`barman_user`](#-barman--postgres--barman_user)
+* [`barman_dbname`](#-barman--postgres--barman_dbname)
 * [`barman_dbuser`](#-barman--postgres--barman_dbuser)
 * [`barman_home`](#-barman--postgres--barman_home)
 * [`manage_cron`](#-barman--postgres--manage_cron)
@@ -1044,6 +1045,7 @@ The following parameters are available in the `barman::postgres` class:
 * [`conf_template`](#-barman--postgres--conf_template)
 * [`description`](#-barman--postgres--description)
 * [`archiver`](#-barman--postgres--archiver)
+* [`force_archive_mode`](#-barman--postgres--force_archive_mode)
 * [`archiver_batch_size`](#-barman--postgres--archiver_batch_size)
 * [`backup_directory`](#-barman--postgres--backup_directory)
 * [`backup_method`](#-barman--postgres--backup_method)
@@ -1087,10 +1089,14 @@ The following parameters are available in the `barman::postgres` class:
 * [`wal_retention_policy`](#-barman--postgres--wal_retention_policy)
 * [`wals_directory`](#-barman--postgres--wals_directory)
 * [`custom_lines`](#-barman--postgres--custom_lines)
-* [`manage_barman_server`](#-barman--postgres--manage_barman_server)
-* [`manage_dbuser`](#-barman--postgres--manage_dbuser)
-* [`barman_dbname`](#-barman--postgres--barman_dbname)
-* [`force_archive_mode`](#-barman--postgres--force_archive_mode)
+
+##### <a name="-barman--postgres--manage_barman_server"></a>`manage_barman_server`
+
+Data type: `Boolean`
+
+Whether barman server config should be exported, default: `true`
+
+Default value: `true`
 
 ##### <a name="-barman--postgres--host_group"></a>`host_group`
 
@@ -1099,6 +1105,14 @@ Data type: `String`
 
 
 Default value: `$barman::host_group`
+
+##### <a name="-barman--postgres--manage_dbuser"></a>`manage_dbuser`
+
+Data type: `Boolean`
+
+Whether db role should be managed, default: `true`
+
+Default value: `true`
 
 ##### <a name="-barman--postgres--manage_ssh_host_keys"></a>`manage_ssh_host_keys`
 
@@ -1123,6 +1137,14 @@ Data type: `String`
 
 
 Default value: `$barman::user`
+
+##### <a name="-barman--postgres--barman_dbname"></a>`barman_dbname`
+
+Data type: `String`
+
+Name of the barman DB
+
+Default value: `$barman::dbname`
 
 ##### <a name="-barman--postgres--barman_dbuser"></a>`barman_dbuser`
 
@@ -1259,6 +1281,14 @@ Data type: `Boolean`
 
 
 Default value: `$barman::archiver`
+
+##### <a name="-barman--postgres--force_archive_mode"></a>`force_archive_mode`
+
+Data type: `Optional[Enum['on', 'off', 'always']]`
+
+Configure archive mode regardless of archiver settings
+
+Default value: `undef`
 
 ##### <a name="-barman--postgres--archiver_batch_size"></a>`archiver_batch_size`
 
@@ -1416,7 +1446,7 @@ Default value: `$barman::network_compression`
 
 Data type: `Optional[Integer]`
 
-arallel_jobs] - Number of parallel workers used to copy files during
+- Number of parallel workers used to copy files during
 backup or recovery. Requires backup mode = rsync.
 
 Default value: `$barman::parallel_jobs`
@@ -1605,38 +1635,6 @@ DEPRECATED. Custom configuration directives (e.g. for custom compression). Defau
 
 Default value: `$barman::custom_lines`
 
-##### <a name="-barman--postgres--manage_barman_server"></a>`manage_barman_server`
-
-Data type: `Boolean`
-
-
-
-Default value: `true`
-
-##### <a name="-barman--postgres--manage_dbuser"></a>`manage_dbuser`
-
-Data type: `Boolean`
-
-
-
-Default value: `true`
-
-##### <a name="-barman--postgres--barman_dbname"></a>`barman_dbname`
-
-Data type: `String`
-
-
-
-Default value: `$barman::dbname`
-
-##### <a name="-barman--postgres--force_archive_mode"></a>`force_archive_mode`
-
-Data type: `Optional[Enum['on', 'off', 'always']]`
-
-
-
-Default value: `undef`
-
 ## Defined types
 
 ### <a name="barman--archive_command"></a>`barman::archive_command`
@@ -1789,6 +1787,9 @@ Maximum execution time, in seconds per server, for a barman
                     integer, default 30.
 Compression algorithm. Currently supports 'gzip' (default),
                   'bzip2', and 'custom'. Disabled if false.
+Determines whether Barman should automatically create a replication slot if it’s
+                   not already present for streaming WAL files.
+                   One of 'auto' or 'manual' (default).
 Customised compression algorithm applied to WAL
                                 files.
 Customised decompression algorithm applied to
@@ -1857,6 +1858,8 @@ Base backup retention policy, based on redundancy or
                        Value must be greater than or equal to the server
                        minimum redundancy level (if not is is assigned to
                        that value and a warning is generated).
+Connection string for Barman to connect to the primary Postgres server during
+                       a standby backup. Default: undef (disabled).
 Can only be set to auto (retention policies are
                             automatically enforced by the barman cron command)
 Incremental backup is a kind of full periodic backup which
@@ -1944,6 +1947,7 @@ The following parameters are available in the `barman::server` defined type:
 * [`basebackup_retry_times`](#-barman--server--basebackup_retry_times)
 * [`check_timeout`](#-barman--server--check_timeout)
 * [`compression`](#-barman--server--compression)
+* [`create_slot`](#-barman--server--create_slot)
 * [`custom_compression_filter`](#-barman--server--custom_compression_filter)
 * [`custom_decompression_filter`](#-barman--server--custom_decompression_filter)
 * [`errors_directory`](#-barman--server--errors_directory)
@@ -1963,6 +1967,7 @@ The following parameters are available in the `barman::server` defined type:
 * [`pre_backup_retry_script`](#-barman--server--pre_backup_retry_script)
 * [`pre_backup_script`](#-barman--server--pre_backup_script)
 * [`retention_policy`](#-barman--server--retention_policy)
+* [`primary_conninfo`](#-barman--server--primary_conninfo)
 * [`retention_policy_mode`](#-barman--server--retention_policy_mode)
 * [`reuse_backup`](#-barman--server--reuse_backup)
 * [`slot_name`](#-barman--server--slot_name)
@@ -2125,6 +2130,14 @@ Data type: `Variant[String,Boolean]`
 
 Default value: `$barman::compression`
 
+##### <a name="-barman--server--create_slot"></a>`create_slot`
+
+Data type: `Barman::CreateSlot`
+
+
+
+Default value: `$barman::create_slot`
+
 ##### <a name="-barman--server--custom_compression_filter"></a>`custom_compression_filter`
 
 Data type: `Optional[String]`
@@ -2193,7 +2206,7 @@ Default value: `$barman::network_compression`
 
 Data type: `Optional[Integer]`
 
-arallel_jobs] - Number of parallel workers used to copy files during
+- Number of parallel workers used to copy files during
 backup or recovery. Requires backup mode = rsync.
 
 Default value: `$barman::parallel_jobs`
@@ -2277,6 +2290,14 @@ Data type: `Barman::RetentionPolicy`
 
 
 Default value: `$barman::retention_policy`
+
+##### <a name="-barman--server--primary_conninfo"></a>`primary_conninfo`
+
+Data type: `Optional[String]`
+
+
+
+Default value: `undef`
 
 ##### <a name="-barman--server--retention_policy_mode"></a>`retention_policy_mode`
 
@@ -2401,6 +2422,12 @@ Alias of `Optional[Enum['rsync','postgres']]`
 Barman backup options
 
 Alias of `Optional[Enum['exclusive_backup', 'concurrent_backup']]`
+
+### <a name="Barman--CreateSlot"></a>`Barman::CreateSlot`
+
+create_slow parrams
+
+Alias of `Optional[Enum['manual', 'auto']]`
 
 ### <a name="Barman--LogLevel"></a>`Barman::LogLevel`
 

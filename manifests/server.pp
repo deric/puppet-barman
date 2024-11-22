@@ -126,7 +126,7 @@
 # @param network_compression
 # This option allows you to enable data compression for
 #                           network transfers. Defaults to false.
-# @param parallel_jobs] - Number of parallel workers used to copy files during
+# @param parallel_jobs - Number of parallel workers used to copy files during
 #                    backup or recovery. Requires backup mode = rsync.
 # @param path_prefix
 # One or more absolute paths, separated by colon, where Barman
