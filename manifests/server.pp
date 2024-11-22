@@ -90,6 +90,10 @@
 # @param compression
 # Compression algorithm. Currently supports 'gzip' (default),
 #                   'bzip2', and 'custom'. Disabled if false.
+# @param create_slot
+# Determines whether Barman should automatically create a replication slot if it’s
+#                    not already present for streaming WAL files.
+#                    One of 'auto' or 'manual' (default).
 # @param custom_compression_filter
 # Customised compression algorithm applied to WAL
 #                                 files.
@@ -178,6 +182,9 @@
 #                        Value must be greater than or equal to the server
 #                        minimum redundancy level (if not is is assigned to
 #                        that value and a warning is generated).
+# @param primary_conninfo
+# Connection string for Barman to connect to the primary Postgres server during
+#                        a standby backup. Default: undef (disabled).
 # @param retention_policy_mode
 # Can only be set to auto (retention policies are
 #                             automatically enforced by the barman cron command)
@@ -259,6 +266,7 @@ define barman::server (
   Optional[Integer]              $basebackup_retry_times        = $barman::basebackup_retry_times,
   Optional[Integer]              $check_timeout                 = $barman::check_timeout,
   Variant[String,Boolean]        $compression                   = $barman::compression,
+  Barman::CreateSlot             $create_slot                   = $barman::create_slot,
   Optional[String]               $custom_compression_filter     = $barman::custom_compression_filter,
   Optional[String]               $custom_decompression_filter   = $barman::custom_decompression_filter,
   Optional[Stdlib::Absolutepath] $errors_directory              = undef,
@@ -277,6 +285,7 @@ define barman::server (
   Optional[String]               $pre_archive_script            = $barman::pre_archive_script,
   Optional[String]               $pre_backup_retry_script       = $barman::pre_backup_retry_script,
   Optional[String]               $pre_backup_script             = $barman::pre_backup_script,
+  Optional[String]               $primary_conninfo              = undef,
   Barman::RecoveryOptions        $recovery_options              = $barman::recovery_options,
   Barman::RetentionPolicy        $retention_policy              = $barman::retention_policy,
   Barman::RetentionPolicyMode    $retention_policy_mode         = $barman::retention_policy_mode,
