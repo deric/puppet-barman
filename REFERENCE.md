@@ -20,7 +20,7 @@
 * [`Barman::BackupAge`](#Barman--BackupAge): Allowed backup age
 * [`Barman::BackupMethod`](#Barman--BackupMethod): Barman backup methods
 * [`Barman::BackupOptions`](#Barman--BackupOptions): Barman backup options
-* [`Barman::CreateSlot`](#Barman--CreateSlot): create_slow parrams
+* [`Barman::CreateSlot`](#Barman--CreateSlot): Allowed values for `create_slot` option
 * [`Barman::LogLevel`](#Barman--LogLevel): Allowed log levels
 * [`Barman::Password`](#Barman--Password): Allowed values for secrets
 * [`Barman::RecoveryOptions`](#Barman--RecoveryOptions): Recovery options, currently only `get-wal` supported
@@ -2425,7 +2425,7 @@ Alias of `Optional[Enum['exclusive_backup', 'concurrent_backup']]`
 
 ### <a name="Barman--CreateSlot"></a>`Barman::CreateSlot`
 
-create_slow parrams
+Allowed values for `create_slot` option
 
 Alias of `Optional[Enum['manual', 'auto']]`
 

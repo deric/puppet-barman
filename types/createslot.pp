@@ -1,2 +1,2 @@
-# create_slow parrams
+# Allowed values for `create_slot` option
 type Barman::CreateSlot = Optional[Enum['manual', 'auto']]
