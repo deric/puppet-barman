@@ -1,3 +1,16 @@
+## 2024-11-22 - Release 4.2.0
+
+**Features**
+- [Support create_slot and primary_conninfo parameters #13](https://github.com/deric/puppet-barman/pull/13)
+
+**Bugfixes**
+- [revert ownerships to Debian defaults #12](https://github.com/deric/puppet-barman/pull/12)
+
+**Changes**
+- Remove Debian 10 as supported system
+
+- [Full changes](https://github.com/deric/puppet-barman/compare/v4.1.0...v4.2.0)
+
 ## 2023-12-15 - Release 4.1.0
 
 **Bugfixes**
