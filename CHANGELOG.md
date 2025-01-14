@@ -1,3 +1,11 @@
+## 2025-01-14 - Release 4.3.0
+
+**Changes**
+- [postgresql_password func with postgresql::postgresql_password (#15)](https://github.com/deric/puppet-barman/pull/15)
+
+
+[Full changes](https://github.com/deric/puppet-barman/compare/v4.2.0...v4.3.0)
+
 ## 2024-11-22 - Release 4.2.0
 
 **Features**
