@@ -385,7 +385,7 @@ class barman::postgres (
   if $manage_dbuser {
     postgresql::server::role { $barman_dbuser:
       login         => true,
-      password_hash => postgresql_password($barman_dbuser, $real_password),
+      password_hash => postgresql::postgresql_password($barman_dbuser, $real_password),
       superuser     => true,
     }
   }
