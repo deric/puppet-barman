@@ -112,15 +112,24 @@
 # Directory where incoming WAL files are archived
 #                               into. Requires archiver to be enabled.
 # @param last_backup_maximum_age
-# This option identifies a time frame that must
-#                               contain the latest backup. If the latest backup is
-#                               older than the time frame, barman check command
-#                               will report an error to the user. If empty
-#                               (default), latest backup is always considered
-#                               valid. Syntax for this option is: "i (DAYS |
-#                               WEEKS | MONTHS)" where i is a integer greater than
-#                               zero, representing the number of days | weeks |
-#                               months of the time frame.
+#   Defines the time frame within which the latest backup must fall. If the latest
+#   backup is older than this period, the barman check command will report an
+#   error. If left empty (default), the latest backup is always considered valid.
+#   The accepted format is "n {DAYS|WEEKS|MONTHS}", where n is an integer greater
+#   than zero.
+# @param last_wal_maximum_age
+#   Defines the time frame within which the latest archived WAL file must fall. If
+#   the latest WAL file is older than this period, the barman check command will
+#   report an error. If left empty (default), the age of the WAL files is not
+#   checked. Format is the same as last_backup_maximum_age.
+# @param last_backup_minimum_size
+#   Specifies the minimum acceptable size for the latest successful backup. If the
+#   latest backup is smaller than this size, the barman check command will report
+#   an error. If left empty (default), the latest backup is always considered
+#   valid. The accepted format is "n {k|Ki|M|Mi|G|Gi|T|Ti}" and case-sensitive,
+#   where n is an integer greater than zero, with an optional SI or IEC suffix.
+#   k stands for kilo with k = 1000, while Ki stands for kilobytes Ki = 1024. The
+#   rest of the options have the same reasoning for greater units of measure.
 # @param minimum_redundancy
 # Minimum number of backups to be retained. Default 0.
 # @param network_compression
@@ -273,6 +282,8 @@ define barman::server (
   Boolean                        $immediate_checkpoint          = $barman::immediate_checkpoint,
   Optional[Stdlib::Absolutepath] $incoming_wals_directory       = undef,
   Barman::BackupAge              $last_backup_maximum_age       = $barman::last_backup_maximum_age,
+  Barman::BackupAge              $last_wal_maximum_age          = $barman::last_wal_maximum_age,
+  Barman::BackupSize             $last_backup_minimum_size      = $barman::last_backup_minimum_size,
   Optional[Integer]              $minimum_redundancy            = $barman::minimum_redundancy,
   Optional[Boolean]              $network_compression           = $barman::network_compression,
   Optional[Integer]              $parallel_jobs                 = $barman::parallel_jobs,

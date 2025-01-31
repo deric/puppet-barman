@@ -20,6 +20,7 @@
 * [`Barman::BackupAge`](#Barman--BackupAge): Allowed backup age
 * [`Barman::BackupMethod`](#Barman--BackupMethod): Barman backup methods
 * [`Barman::BackupOptions`](#Barman--BackupOptions): Barman backup options
+* [`Barman::BackupSize`](#Barman--BackupSize): Allowed backup size
 * [`Barman::CreateSlot`](#Barman--CreateSlot): Allowed values for `create_slot` option
 * [`Barman::LogLevel`](#Barman--LogLevel): Allowed log levels
 * [`Barman::Password`](#Barman--Password): Allowed values for secrets
@@ -52,10 +53,6 @@ Copyright 2012-2017 2ndQuadrant Italia
 This option allows you to enable data compression for network transfers. Defaults to false.
 One or more absolute paths, separated by colon, where Barman
                   looks for executable files.
-Time frame that must contain the latest backup
-                              date. If the latest backup is older than the
-                              time frame, barman check command will report an
-                              error to the user. Empty if false (default).
 Hook script launched after a WAL file is
                                 archived by maintenance. Being this a retry hook
                                 script, Barman will retry the execution of the
@@ -225,6 +222,8 @@ The following parameters are available in the `barman` class:
 * [`parallel_jobs`](#-barman--parallel_jobs)
 * [`path_prefix`](#-barman--path_prefix)
 * [`last_backup_maximum_age`](#-barman--last_backup_maximum_age)
+* [`last_wal_maximum_age`](#-barman--last_wal_maximum_age)
+* [`last_backup_minimum_size`](#-barman--last_backup_minimum_size)
 * [`post_archive_retry_script`](#-barman--post_archive_retry_script)
 * [`post_archive_script`](#-barman--post_archive_script)
 * [`post_backup_retry_script`](#-barman--post_backup_retry_script)
@@ -508,7 +507,36 @@ Default value: `undef`
 
 Data type: `Barman::BackupAge`
 
+Defines the time frame within which the latest backup must fall. If the latest
+backup is older than this period, the barman check command will report an
+error. If left empty (default), the latest backup is always considered valid.
+The accepted format is "n {DAYS|WEEKS|MONTHS}", where n is an integer greater
+than zero.
 
+Default value: `undef`
+
+##### <a name="-barman--last_wal_maximum_age"></a>`last_wal_maximum_age`
+
+Data type: `Barman::BackupAge`
+
+Defines the time frame within which the latest archived WAL file must fall. If
+the latest WAL file is older than this period, the barman check command will
+report an error. If left empty (default), the age of the WAL files is not
+checked. Format is the same as last_backup_maximum_age.
+
+Default value: `undef`
+
+##### <a name="-barman--last_backup_minimum_size"></a>`last_backup_minimum_size`
+
+Data type: `Barman::BackupSize`
+
+Specifies the minimum acceptable size for the latest successful backup. If the
+latest backup is smaller than this size, the barman check command will report
+an error. If left empty (default), the latest backup is always considered
+valid. The accepted format is "n {k|Ki|M|Mi|G|Gi|T|Ti}" and case-sensitive,
+where n is an integer greater than zero, with an optional SI or IEC suffix.
+k stands for kilo with k = 1000, while Ki stands for kilobytes Ki = 1024. The
+rest of the options have the same reasoning for greater units of measure.
 
 Default value: `undef`
 
@@ -895,15 +923,6 @@ Force the checkpoint on the Postgres server to
                            (default)
 Directory where incoming WAL files are archived
                               into. Requires archiver to be enabled.
-This option identifies a time frame that must
-                              contain the latest backup. If the latest backup is
-                              older than the time frame, barman check command
-                              will report an error to the user. If empty
-                              (default), latest backup is always considered
-                              valid. Syntax for this option is: "i (DAYS |
-                              WEEKS | MONTHS)" where i is a integer greater than
-                              zero, representing the number of days | weeks |
-                              months of the time frame.
 Minimum number of backups to be retained. Default 0.
 This option allows you to enable data compression for
                           network transfers. Defaults to false.
@@ -1063,6 +1082,8 @@ The following parameters are available in the `barman::postgres` class:
 * [`immediate_checkpoint`](#-barman--postgres--immediate_checkpoint)
 * [`incoming_wals_directory`](#-barman--postgres--incoming_wals_directory)
 * [`last_backup_maximum_age`](#-barman--postgres--last_backup_maximum_age)
+* [`last_wal_maximum_age`](#-barman--postgres--last_wal_maximum_age)
+* [`last_backup_minimum_size`](#-barman--postgres--last_backup_minimum_size)
 * [`minimum_redundancy`](#-barman--postgres--minimum_redundancy)
 * [`network_compression`](#-barman--postgres--network_compression)
 * [`parallel_jobs`](#-barman--postgres--parallel_jobs)
@@ -1422,9 +1443,38 @@ Default value: `undef`
 
 Data type: `Barman::BackupAge`
 
-
+Defines the time frame within which the latest backup must fall. If the latest
+backup is older than this period, the barman check command will report an
+error. If left empty (default), the latest backup is always considered valid.
+The accepted format is "n {DAYS|WEEKS|MONTHS}", where n is an integer greater
+than zero.
 
 Default value: `$barman::last_backup_maximum_age`
+
+##### <a name="-barman--postgres--last_wal_maximum_age"></a>`last_wal_maximum_age`
+
+Data type: `Barman::BackupAge`
+
+Defines the time frame within which the latest archived WAL file must fall. If
+the latest WAL file is older than this period, the barman check command will
+report an error. If left empty (default), the age of the WAL files is not
+checked. Format is the same as last_backup_maximum_age.
+
+Default value: `$barman::last_wal_maximum_age`
+
+##### <a name="-barman--postgres--last_backup_minimum_size"></a>`last_backup_minimum_size`
+
+Data type: `Barman::BackupSize`
+
+Specifies the minimum acceptable size for the latest successful backup. If the
+latest backup is smaller than this size, the barman check command will report
+an error. If left empty (default), the latest backup is always considered
+valid. The accepted format is "n {k|Ki|M|Mi|G|Gi|T|Ti}" and case-sensitive,
+where n is an integer greater than zero, with an optional SI or IEC suffix.
+k stands for kilo with k = 1000, while Ki stands for kilobytes Ki = 1024. The
+rest of the options have the same reasoning for greater units of measure.
+
+Default value: `$barman::last_backup_minimum_size`
 
 ##### <a name="-barman--postgres--minimum_redundancy"></a>`minimum_redundancy`
 
@@ -1802,15 +1852,6 @@ Force the checkpoint on the Postgres server to
                            (default)
 Directory where incoming WAL files are archived
                               into. Requires archiver to be enabled.
-This option identifies a time frame that must
-                              contain the latest backup. If the latest backup is
-                              older than the time frame, barman check command
-                              will report an error to the user. If empty
-                              (default), latest backup is always considered
-                              valid. Syntax for this option is: "i (DAYS |
-                              WEEKS | MONTHS)" where i is a integer greater than
-                              zero, representing the number of days | weeks |
-                              months of the time frame.
 Minimum number of backups to be retained. Default 0.
 This option allows you to enable data compression for
                           network transfers. Defaults to false.
@@ -1954,6 +1995,8 @@ The following parameters are available in the `barman::server` defined type:
 * [`immediate_checkpoint`](#-barman--server--immediate_checkpoint)
 * [`incoming_wals_directory`](#-barman--server--incoming_wals_directory)
 * [`last_backup_maximum_age`](#-barman--server--last_backup_maximum_age)
+* [`last_wal_maximum_age`](#-barman--server--last_wal_maximum_age)
+* [`last_backup_minimum_size`](#-barman--server--last_backup_minimum_size)
 * [`minimum_redundancy`](#-barman--server--minimum_redundancy)
 * [`network_compression`](#-barman--server--network_compression)
 * [`parallel_jobs`](#-barman--server--parallel_jobs)
@@ -2182,9 +2225,38 @@ Default value: `undef`
 
 Data type: `Barman::BackupAge`
 
-
+Defines the time frame within which the latest backup must fall. If the latest
+backup is older than this period, the barman check command will report an
+error. If left empty (default), the latest backup is always considered valid.
+The accepted format is "n {DAYS|WEEKS|MONTHS}", where n is an integer greater
+than zero.
 
 Default value: `$barman::last_backup_maximum_age`
+
+##### <a name="-barman--server--last_wal_maximum_age"></a>`last_wal_maximum_age`
+
+Data type: `Barman::BackupAge`
+
+Defines the time frame within which the latest archived WAL file must fall. If
+the latest WAL file is older than this period, the barman check command will
+report an error. If left empty (default), the age of the WAL files is not
+checked. Format is the same as last_backup_maximum_age.
+
+Default value: `$barman::last_wal_maximum_age`
+
+##### <a name="-barman--server--last_backup_minimum_size"></a>`last_backup_minimum_size`
+
+Data type: `Barman::BackupSize`
+
+Specifies the minimum acceptable size for the latest successful backup. If the
+latest backup is smaller than this size, the barman check command will report
+an error. If left empty (default), the latest backup is always considered
+valid. The accepted format is "n {k|Ki|M|Mi|G|Gi|T|Ti}" and case-sensitive,
+where n is an integer greater than zero, with an optional SI or IEC suffix.
+k stands for kilo with k = 1000, while Ki stands for kilobytes Ki = 1024. The
+rest of the options have the same reasoning for greater units of measure.
+
+Default value: `$barman::last_backup_minimum_size`
 
 ##### <a name="-barman--server--minimum_redundancy"></a>`minimum_redundancy`
 
@@ -2422,6 +2494,12 @@ Alias of `Optional[Enum['rsync','postgres']]`
 Barman backup options
 
 Alias of `Optional[Enum['exclusive_backup', 'concurrent_backup']]`
+
+### <a name="Barman--BackupSize"></a>`Barman::BackupSize`
+
+Allowed backup size
+
+Alias of `Optional[Pattern[/^[1-9][0-9]*( (k|Ki|M|Mi|G|Gi|T|Ti))?$/]]`
 
 ### <a name="Barman--CreateSlot"></a>`Barman::CreateSlot`
 

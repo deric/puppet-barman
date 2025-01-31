@@ -118,10 +118,24 @@
 # One or more absolute paths, separated by colon, where Barman
 #                   looks for executable files.
 # @param last_backup_maximum_age
-# Time frame that must contain the latest backup
-#                               date. If the latest backup is older than the
-#                               time frame, barman check command will report an
-#                               error to the user. Empty if false (default).
+#   Defines the time frame within which the latest backup must fall. If the latest
+#   backup is older than this period, the barman check command will report an
+#   error. If left empty (default), the latest backup is always considered valid.
+#   The accepted format is "n {DAYS|WEEKS|MONTHS}", where n is an integer greater
+#   than zero.
+# @param last_wal_maximum_age
+#   Defines the time frame within which the latest archived WAL file must fall. If
+#   the latest WAL file is older than this period, the barman check command will
+#   report an error. If left empty (default), the age of the WAL files is not
+#   checked. Format is the same as last_backup_maximum_age.
+# @param last_backup_minimum_size
+#   Specifies the minimum acceptable size for the latest successful backup. If the
+#   latest backup is smaller than this size, the barman check command will report
+#   an error. If left empty (default), the latest backup is always considered
+#   valid. The accepted format is "n {k|Ki|M|Mi|G|Gi|T|Ti}" and case-sensitive,
+#   where n is an integer greater than zero, with an optional SI or IEC suffix.
+#   k stands for kilo with k = 1000, while Ki stands for kilobytes Ki = 1024. The
+#   rest of the options have the same reasoning for greater units of measure.
 # @param post_archive_retry_script
 # Hook script launched after a WAL file is
 #                                 archived by maintenance. Being this a retry hook
@@ -301,6 +315,8 @@ class barman (
   Optional[String]                   $custom_decompression_filter   = undef,
   Stdlib::IP::Address                $exported_ipaddress            = "${facts['networking']['ip']}/32",
   Barman::BackupAge                  $last_backup_maximum_age        = undef,
+  Barman::BackupAge                  $last_wal_maximum_age           = undef,
+  Barman::BackupSize                 $last_backup_minimum_size       = undef,
   Optional[Boolean]                  $network_compression            = undef,
   Optional[Integer]                  $parallel_jobs                  = undef,
   Optional[Stdlib::Absolutepath]     $path_prefix                    = undef,
