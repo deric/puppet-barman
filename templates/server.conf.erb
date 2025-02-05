@@ -60,6 +60,12 @@ incoming_wals_directory = <%= @incoming_wals_directory %>
 <%- if @last_backup_maximum_age -%>
 last_backup_maximum_age = <%= @last_backup_maximum_age %>
 <%- end -%>
+<%- if @last_wal_maximum_age -%>
+last_wal_maximum_age = <%= @last_wal_maximum_age %>
+<%- end -%>
+<%- if @last_backup_minimum_size -%>
+last_backup_minimum_size = <%= @last_backup_minimum_size %>
+<%- end -%>
 minimum_redundancy = <%= @minimum_redundancy %>
 <%- if @network_compression -%>
 network_compression = <%= @network_compression %>
