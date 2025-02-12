@@ -38,16 +38,14 @@ group :development do
 end
 group :development, :release_prep do
   gem "puppet-strings", '~> 4.0',         require: false
-  gem "puppetlabs_spec_helper", '~> 7.0', require: false
+  gem "puppetlabs_spec_helper", '~> 8.0', require: false
+  gem "puppet-blacksmith", '~> 7.0',      require: false
 end
 group :system_tests do
   gem "puppet_litmus", '~> 1.0',   require: false, platforms: [:ruby, :x64_mingw]
   gem "CFPropertyList", '< 3.0.7', require: false, platforms: [:mswin, :mingw, :x64_mingw]
   gem "serverspec", '~> 2.41',     require: false
   gem "voxpupuli-acceptance",      require: false
-end
-group :release do
-  gem "puppet-blacksmith", require: false
 end
 
 puppet_version = ENV['PUPPET_GEM_VERSION']
