@@ -1,3 +1,12 @@
+## 2025-01-14 - Release 4.4.0
+
+**Features**
+
+- [add last_wal_maximum_age and last_backup_minimum_size params (#16)](https://github.com/deric/puppet-barman/pull/16)
+
+
+[Full changes](https://github.com/deric/puppet-barman/compare/v4.3.0...v4.4.0)
+
 ## 2025-01-14 - Release 4.3.0
 
 **Changes**
