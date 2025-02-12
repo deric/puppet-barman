@@ -1,5 +1,9 @@
 ## 2025-01-14 - Release 4.4.0
 
+**Changes**
+
+- allow `puppetlabs/apt` < 11
+
 **Features**
 
 - [add last_wal_maximum_age and last_backup_minimum_size params (#16)](https://github.com/deric/puppet-barman/pull/16)
