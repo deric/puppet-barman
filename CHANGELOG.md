@@ -1,4 +1,14 @@
-## 2025-01-14 - Release 4.4.0
+## 2025-02-13 - Release 4.4.1
+
+**Features**
+
+- [Support hour as possible backup age value (#17)](https://github.com/deric/puppet-barman/pull/17)
+
+
+[Full changes](https://github.com/deric/puppet-barman/compare/v4.4.0...v4.4.1)
+
+
+## 2025-02-12 - Release 4.4.0
 
 **Changes**
 
