@@ -85,6 +85,7 @@ class barman::autoconfigure (
   @@barman::archive_command { $barman::barman_fqdn :
     tag              => "barman-${host_group}",
     barman_home      => $barman::home,
+    barman_user      => $barman::user,
     archive_cmd_type => $archive_cmd_type,
   }
 
