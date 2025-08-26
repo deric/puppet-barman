@@ -56,6 +56,9 @@
 #                   is set from the 'settings' class.
 # @param manage_cron
 # Whether cron entry should be managed.
+# @param conninfo_options
+# Additional connection options passed to the conninfo string.
+#                   The default value is undef.
 # @param cron_user
 # User to run cron jobs.
 # @param backup_mday
@@ -305,6 +308,7 @@ class barman::postgres (
   String                                $barman_dbname                 = $barman::dbname,
   String                                $barman_home                   = $barman::home,
   Boolean                               $manage_cron                   = true,
+  Optional[String]                      $conninfo_options              = undef,
   String                                $cron_user                     = 'root',
   Optional[Integer]                     $backup_mday                   = undef,
   Optional[Integer]                     $backup_wday                   = undef,
@@ -411,7 +415,7 @@ class barman::postgres (
   # Export resources to Barman server
   if $manage_barman_server {
     @@barman::server { $postgres_server_id:
-      conninfo                      => "user=${barman_dbuser} dbname=${barman_dbname} host=${server_address} port=${server_port}",
+      conninfo                      => "user=${barman_dbuser} dbname=${barman_dbname} host=${server_address} port=${server_port} ${conninfo_options}",
       ssh_command                   => "ssh -q ${postgres_user}@${server_address}",
       tag                           => "barman-${host_group}",
       archiver                      => $archiver,
